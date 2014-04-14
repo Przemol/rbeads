@@ -24,6 +24,6 @@
 #' @keywords CHiP-seq beads
 #' @examples example(beads)
 #' 
-#' @import IRanges Rsamtools digest rtracklayer GenomicRanges
+#' @import IRanges Rsamtools digest rtracklayer GenomicRanges BSgenome
 #' @exportPattern ^[[:alpha:]]+
 NULL

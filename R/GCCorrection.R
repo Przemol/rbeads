@@ -1,5 +1,32 @@
-GCCorrection <-
-function(ranges.raw, enriched_regions, nonMappableFilter, desc, smoothing_spline=FALSE, cutoff=c(35, 140)) {
+# TODO: Add comment
+# 
+
+if (0) {
+	
+	testGCscores <- function( files=dir(pattern="RawRanges.+Rdata") ) {
+		source('/Users/przemol/Documents/workspace/RBeads/rBeads/rB_enriched_regions_one_strand_v1.0.R')
+		out = list()
+		for(file in files) {
+			cat("-> GC TESTING:", file, "\n")
+			varname <- load(file)
+			d <- sprintf("%s", unlist(strsplit(file, "\\."))[1])
+			ER <- rB.EnrichedRegions.OS(get(varname), desc=d )
+			GC <- rB.sumGCscores(get(varname), enriched_regions=ER, desc=d, smoothing_spline=FALSE)
+			out <- c(out, GC)
+		}
+		names(out) <- files
+		return(out)
+	}
+	
+	
+}
+# Author: przemol
+##############################################################################
+require(GenomicRanges)
+require(rtracklayer)
+require(BSgenome.Celegans.UCSC.ce10)
+
+GCCorrection <- function(ranges.raw, enriched_regions, nonMappableFilter, desc, smoothing_spline=FALSE, cutoff=c(35, 140)) {
 	
 	#Mask out reads in enriched regions
 	if (!is.null(enriched_regions)) {
@@ -37,7 +64,7 @@ function(ranges.raw, enriched_regions, nonMappableFilter, desc, smoothing_spline
 
 	#Calculate histograms for genomic (a) nad and sample (b) GC content
 	catTime("Calculate histograms for genomic (a) nad and sample (b) GC content", e={
-		a <- hist(as.integer(GCgenome), 0:200, plot=F)
+		a <- hist( eval(parse( text = paste('c(as.integer(GCgenome[["',  paste(names(GCgenome), collapse='"]]), as.integer(GCgenome[["'), '"]]))', sep='') )), 0:200, plot=F)
 		if (!is.null(enriched_regions)) {
 			b <- hist(GCcontent[is.na(ERoverlaps)], 0:200, plot=F)
 		} else {
@@ -116,11 +143,17 @@ function(ranges.raw, enriched_regions, nonMappableFilter, desc, smoothing_spline
 			GCchr <- letterFrequencyInSlidingView(getSeq(Celegans, names=x, as.character=F, strand="*"), 200, "GC")
 			which( ! (GCchr >= cutoff[1] & GCchr <= cutoff[2]) )
 		}) )
-		notGCcorrectableRegions <- GRanges(seqnames=as.data.frame(notGCcorrectableReads)$space, ranges=IRanges(as.data.frame(notGCcorrectableReads)$value, width=200))
+		#notGCcorrectableRegions <- GRanges(seqnames=as.data.frame(notGCcorrectableReads)$space, ranges=IRanges(as.data.frame(notGCcorrectableReads)$value, width=200))
+		notGCcorrectableRegions <- GRanges(seqnames=Rle(names(notGCcorrectableReads), sapply(notGCcorrectableReads, length)), ranges=IRanges(unlist(notGCcorrectableReads), width=200))
 		seqlengths(notGCcorrectableRegions) <- seqlengths(Celegans)[ sort(seqnames(Celegans)) ]
 		notGCcorrectableRegions <- c(notGCcorrectableRegions, GRanges(seqnames=seqlevels(Celegans), ranges=IRanges( seqlengths(Celegans)-199, width=200) ))
 		cov.r[ coverage(notGCcorrectableRegions)[names(cov.r)] > 0 ] <- NA
 	})
 
 	return(cov.r)
+}
+
+catTime <- function(..., e=NULL, file="", gc=FALSE) {
+	cat(..., "...", sep="", file=file, append=TRUE)
+	cat("\t<", system.time(e, gcFirst=gc)[3], "s>\n", sep="", file=file, append=TRUE)	
 }

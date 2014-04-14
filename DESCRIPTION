@@ -20,11 +20,9 @@ Depends:
     Rsamtools,
     digest,
     rtracklayer,
-    GenomicRanges
+    GenomicRanges,
+    BSgenome
 License: LGPL
 LazyData: true
 Type: Package
 Date: 2014-04-14
-Author: Przemyslaw Stempor
-Maintainer: Przemyslaw Stempor <ps562@cam.ac.uk>
-LazyLoad: yes

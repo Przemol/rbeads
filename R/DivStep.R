@@ -1,5 +1,12 @@
-DivStep <-
-function(sample, control, enriched_regions=NULL) {
+# TODO: Add comment
+# 
+# Author: przemol
+###############################################################################
+rlel2int <- function(v) {
+	eval(parse( text = paste('c(as.integer(', deparse(substitute(v)), '[["',  paste(names(v), collapse=paste('"]]), as.integer(', deparse(substitute(v)), '[["', sep='')), '"]]))', sep='') ))
+}
+
+DivStep <- function(sample, control, enriched_regions=NULL) {
 	
 	## if(class(control) == 'chracter') {
 	##     if (control == "formaldehyde") {
@@ -44,8 +51,8 @@ function(sample, control, enriched_regions=NULL) {
 				divstep <- sample / control[names(sample)]
 			})
 	
-	catTime("DivStep: Scaling", e={
-				aa <- median(as.numeric(divstep), na.rm=T)
+	catTime("DivStep [median2x]: Scaling", e={
+				aa <- median(median(divstep, na.rm=T))
 				divstep <- divstep / aa
 			})
 	cat('INFO: Scaling coefficient = ', aa, '\n', sep='')
@@ -53,3 +60,12 @@ function(sample, control, enriched_regions=NULL) {
 	return(round(divstep, 3))
 	
 }
+
+catTime <- function(..., e=NULL, file="", gc=FALSE) {
+	cat(..., "...", sep="", file=file, append=TRUE)
+	cat("\t<", system.time(e, gcFirst=gc)[3], "s>\n", sep="", file=file, append=TRUE)	
+}
+
+
+
+
