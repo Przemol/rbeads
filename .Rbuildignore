@@ -1,0 +1,4 @@
+^\.travis\.yml$
+create.R$
+^.*\.Rproj$
+^\.Rproj\.user$

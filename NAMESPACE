@@ -1,0 +1,7 @@
+export(beads)
+exportPattern("^[[:alpha:]]+")
+import(GenomicRanges)
+import(IRanges)
+import(Rsamtools)
+import(digest)
+import(rtracklayer)
