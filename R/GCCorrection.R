@@ -24,10 +24,20 @@ if (0) {
 ##############################################################################
 require(GenomicRanges)
 require(rtracklayer)
-require(BSgenome.Celegans.UCSC.ce10)
+require(BSgenome)
 
-GCCorrection <- function(ranges.raw, enriched_regions, nonMappableFilter, desc, smoothing_spline=FALSE, cutoff=c(35, 140)) {
+GCCorrection <- function(ranges.raw, enriched_regions, nonMappableFilter, genome_fasta=NULL, genome_package=NULL, resize_length=200L desc='', smoothing_spline=FALSE, cutoff=c(35, 140)) {
 	
+  if( !is.null(genome_fasta) ) {
+    REF <- readDNAStringSet( genome_fasta )
+  } else {
+    package <- grep(genome_package, installed.genomes(), value=TRUE, ignore.case=TRUE)
+    if( !length(package) ) { stop('Genome ', genome_package, ' is not installed. Please run "available.genomes()" to get genomes supported by BioConductor or provider reference FASTE file.', call.=FALSE) }
+    library(package, character.only = TRUE)
+    REF <- getSeq( get(package) ); names(REF) <- seqnames(get(package))
+  }
+  
+  
 	#Mask out reads in enriched regions
 	if (!is.null(enriched_regions)) {
 		catTime("Mask out reads in enriched regions", e={
@@ -39,36 +49,36 @@ GCCorrection <- function(ranges.raw, enriched_regions, nonMappableFilter, desc, 
 	
 	#Calculate input GC content from 200bp extended reads (ranges.raw)
 	catTime("Calculate input GCcontent", e={
-		GCcontent <- as.integer(letterFrequency(getSeq(Celegans, ranges.raw, as.character=FALSE), "GC"))
+		GCcontent <- as.integer(letterFrequency(REF[ranges.raw], "GC"))
 	})
 	
 	#Sample genome for GCcontent
 	catTime("Sample genome for GCcontent", e={
 		if (!is.null(enriched_regions)) {
 			#Calculate ogical vectors of non-enriched regions
-			nonEnrichedRegionsLogi <- !coverage(GRanges(space(enriched_regions), unlist(ranges(enriched_regions)), "*", seqlengths=seqlengths(Celegans)))
+			nonEnrichedRegionsLogi <- !coverage(GRanges(space(enriched_regions), unlist(ranges(enriched_regions)), "*", seqlengths= seqlengths( REF ) ))
 			#Perform logical sum of non-enriched regions and mappable regions
 			nonEnrichedMappableRegionsLogi <- nonEnrichedRegionsLogi & nonMappableFilter
 		} else {
 			nonEnrichedMappableRegionsLogi <- nonMappableFilter
 		}
 		#Calculate GC pecrentage among the chromosomes
-		GC <- RleList( lapply(getSeq(Celegans, as.character=F), function(x) Rle(c(letterFrequencyInSlidingView(x, 200, "GC"), rep(NA, 199))) ))
-		names(GC) <- seqnames(Celegans)
+		GC <- RleList( lapply(REF, function(x) Rle(letterFrequencyInSlidingView(x, 200, "GC") )) )
+    
 		#Select only on-enriched regions and mappable regions
 		GCgenome <- GC[nonEnrichedMappableRegionsLogi]	
 	})
 	
 	#INFO: percentage of genome to be sampled
-	cat("\tINFO: percentage of genome to be sampled: ", sum(sapply(GCgenome, length)) / sum(seqlengths(Celegans)), "\n") 
+	cat("\tINFO: percentage of genome to be sampled: ", sum(elementLengths(GCgenome)) / sum(seqlengths( REF )), "\n") 
 
 	#Calculate histograms for genomic (a) nad and sample (b) GC content
 	catTime("Calculate histograms for genomic (a) nad and sample (b) GC content", e={
-		a <- hist( eval(parse( text = paste('c(as.integer(GCgenome[["',  paste(names(GCgenome), collapse='"]]), as.integer(GCgenome[["'), '"]]))', sep='') )), 0:200, plot=F)
+		a <- hist(as.integer(unlist(GCgenome, use.names=FALSE)), 0:200, plot=FALSE)
 		if (!is.null(enriched_regions)) {
 			b <- hist(GCcontent[is.na(ERoverlaps)], 0:200, plot=F)
 		} else {
-			b <- hist(GCcontent, 0:200, plot=F)
+			b <- hist(GCcontent, 0:200, plot=FALSE)
 		}
 	
 		pdf(sprintf("IMG - GCdistribution - %s.pdf", desc), width = 12.0, height = 7.5, onefile = FALSE, paper = "special", encoding = "TeXtext.enc")
@@ -129,6 +139,7 @@ GCCorrection <- function(ranges.raw, enriched_regions, nonMappableFilter, desc, 
 	})
 	
 	#calculate GC weighted coverage with given accuracy
+  # TODO; simplify it and chack on real life example
 	catTime("calculate GC weighted coverage with given accuracy", e={
 		acc = 1000
 		w <- sapply( seqlevels(ranges.f1), function(x) values( ranges.f1[seqnames(ranges.f1) == x] )$value * acc )
@@ -139,14 +150,14 @@ GCCorrection <- function(ranges.raw, enriched_regions, nonMappableFilter, desc, 
 
 	#Mask nonGC correctable regions
 	catTime("Masking non-GCcorrectable regions", e={
-		notGCcorrectableReads <- IntegerList( sapply(sort(seqnames(Celegans)), function(x) {  
-			GCchr <- letterFrequencyInSlidingView(getSeq(Celegans, names=x, as.character=F, strand="*"), 200, "GC")
+		notGCcorrectableReads <- IntegerList( sapply( names( REF ), function(x) {  
+			GCchr <- letterFrequencyInSlidingView(REF[[x]], 200, "GC")
 			which( ! (GCchr >= cutoff[1] & GCchr <= cutoff[2]) )
 		}) )
 		#notGCcorrectableRegions <- GRanges(seqnames=as.data.frame(notGCcorrectableReads)$space, ranges=IRanges(as.data.frame(notGCcorrectableReads)$value, width=200))
 		notGCcorrectableRegions <- GRanges(seqnames=Rle(names(notGCcorrectableReads), sapply(notGCcorrectableReads, length)), ranges=IRanges(unlist(notGCcorrectableReads), width=200))
-		seqlengths(notGCcorrectableRegions) <- seqlengths(Celegans)[ sort(seqnames(Celegans)) ]
-		notGCcorrectableRegions <- c(notGCcorrectableRegions, GRanges(seqnames=seqlevels(Celegans), ranges=IRanges( seqlengths(Celegans)-199, width=200) ))
+		#seqlengths(notGCcorrectableRegions) <- seqlengths( REF )
+		notGCcorrectableRegions <- c(notGCcorrectableRegions, GRanges(seqnames=seqlevels( REF ), ranges=IRanges( seqlengths( REF )-199, width=200) ))
 		cov.r[ coverage(notGCcorrectableRegions)[names(cov.r)] > 0 ] <- NA
 	})
 

@@ -1,10 +1,6 @@
-# TODO: Add comment
-# 
-# Author: przemol
-###############################################################################
-require(digest)
 
-reName <- function(file_name, proccesing="norm", scale='linear', resolution='25bp', ext='.wig', prefix='C', uid=1) {	
+require(digest)
+reName <- function(file_name, proccesing="BEADS", scale='linear', resolution='1bp', ext='.bw', prefix='C', uid=1) {	
 	if ( grepl("^([A-Za-z0-9\\-\\.]+)\\^([A-Za-z0-9\\-\\.]+)_([A-Za-z0-9\\-\\.]+)\\^([A-Za-z0-9\\-\\.]+)\\^([A-Za-z0-9\\-\\.]+)\\^([A-Za-z0-9\\-\\.]+)_([A-Za-z0-9\\-\\.]+)\\^([A-Za-z0-9\\-\\.]+)\\^([A-Za-z0-9\\-\\.]+)", file_name, perl=T) ) {
 		
 		if( unlist(gregexpr('\\.\\w+$', file_name)) > 0) {
@@ -17,10 +13,12 @@ reName <- function(file_name, proccesing="norm", scale='linear', resolution='25b
 		num = sprintf("%05d", uid)
 		return(sprintf('%s^%s%s%s%s', out, prefix, md5, num, ext))
 	} else {
-		warning('Wrong name format')
-		return(sprintf("%s_%s^%s^%s%s", unlist(strsplit(file_name, "\\."))[1], proccesing, scale, resolution, ext))
+		#warning('Wrong name format')
+	  pos <- regexpr("\\.([[:alnum:]]+)$", file_name)
+		return(sprintf("%s_%s_%s_%s%s", ifelse(pos > -1L, substring(file_name, 0, pos-1), file_name), proccesing, scale, resolution, ext))
 	}
 }
+
 ParseName <- function(x) {
 	rx <- "^([^\\^_]+)\\^([^\\^_]+)_([^\\^_]+)\\^([^\\^_]+)\\^([^\\^_]+)\\^([^\\^_]+)_([^\\^_]+)\\^([^\\^_]+)\\^([^\\^_]+)_([^\\^_]+)\\^([^\\^_\\.]+)(_[^\\.]+)?(\\..+)$"
 	if ( grepl(rx, x) ) {
@@ -29,24 +27,6 @@ ParseName <- function(x) {
 		return( data.frame(t(out[c(1:11,13,12)]), stringsAsFactors = FALSE) )		
 	} else warning('Wrong name format')
 }
-
-#ParseName <- function(file_name) {
-#	if ( grepl("^([A-Za-z0-9\\-\\.]+)\\^([A-Za-z0-9\\-\\.]+)_([A-Za-z0-9\\-\\.]+)\\^([A-Za-z0-9\\-\\.]+)\\^([A-Za-z0-9\\-\\.]+)\\^([A-Za-z0-9\\-\\.]+)_([A-Za-z0-9\\-\\.]+)\\^([A-Za-z0-9\\-\\.]+)\\^([A-Za-z0-9\\-\\.]+)", file_name, perl=T) ) {
-#		
-#		if( unlist(gregexpr('\\.\\w+$', file_name)) > 0) {
-#			ff <- strsplit( substr(file_name, 1, unlist(gregexpr('\\.\\w+$', file_name))-1) , '(\\^|_)', perl=T)[[1]]
-#			ext <- substr(file_name, unlist(gregexpr('\\.\\w+$', file_name)), nchar(file_name))
-#		} else {
-#			ff <- strsplit(file_name, '(\\^|_)', perl=T)[[1]]
-#			ext <- NA
-#		}
-#		ff <- strsplit( substr(file_name, 1, unlist(gregexpr('\\.\\w+$', file_name))-1) , '(\\^|_)', perl=T)[[1]]
-#		df <- data.frame(Factor=I(ff[1]), Antibody=I(ff[2]), ExtractID=I(ff[3]), Crosslinker=I(ff[4]), Strain=I(ff[5]), Stage=I(ff[6]), Processing=I(ff[7]), Resolution=I(ff[8]), Scale=I(ff[9]), ContactExpID=I(ff[10]), UID=I(ff[11]), Extension=I(ext))
-#		return(df)
-#	} else {
-#		warning('Wrong name format')
-#	}
-#}
 
 CheckName <- function(file_name) {
 	if ( grepl("^([A-Za-z0-9\\-\\.]+)\\^([A-Za-z0-9\\-\\.]+)_([A-Za-z0-9\\-\\.]+)\\^([A-Za-z0-9\\-\\.]+)\\^([A-Za-z0-9\\-\\.]+)\\^([A-Za-z0-9\\-\\.]+)_([A-Za-z0-9\\-\\.]+)\\^([A-Za-z0-9\\-\\.]+)\\^([A-Za-z0-9\\-\\.]+)", file_name, perl=T) ) {
