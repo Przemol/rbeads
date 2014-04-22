@@ -1,43 +1,12 @@
-# TODO: Add comment
-# 
-
-if (0) {
-	
-	testGCscores <- function( files=dir(pattern="RawRanges.+Rdata") ) {
-		source('/Users/przemol/Documents/workspace/RBeads/rBeads/rB_enriched_regions_one_strand_v1.0.R')
-		out = list()
-		for(file in files) {
-			cat("-> GC TESTING:", file, "\n")
-			varname <- load(file)
-			d <- sprintf("%s", unlist(strsplit(file, "\\."))[1])
-			ER <- rB.EnrichedRegions.OS(get(varname), desc=d )
-			GC <- rB.sumGCscores(get(varname), enriched_regions=ER, desc=d, smoothing_spline=FALSE)
-			out <- c(out, GC)
-		}
-		names(out) <- files
-		return(out)
-	}
-	
-	
-}
-# Author: przemol
+# Przemyslaw Stempor, 2014
 ##############################################################################
+
 require(GenomicRanges)
 require(rtracklayer)
 require(BSgenome)
 
-GCCorrection <- function(ranges.raw, enriched_regions, nonMappableFilter, genome_fasta=NULL, genome_package=NULL, resize_length=200L desc='', smoothing_spline=FALSE, cutoff=c(35, 140)) {
-	
-  if( !is.null(genome_fasta) ) {
-    REF <- readDNAStringSet( genome_fasta )
-  } else {
-    package <- grep(genome_package, installed.genomes(), value=TRUE, ignore.case=TRUE)
-    if( !length(package) ) { stop('Genome ', genome_package, ' is not installed. Please run "available.genomes()" to get genomes supported by BioConductor or provider reference FASTE file.', call.=FALSE) }
-    library(package, character.only = TRUE)
-    REF <- getSeq( get(package) ); names(REF) <- seqnames(get(package))
-  }
-  
-  
+GCCorrection <- function(ranges.raw, enriched_regions, nonMappableFilter, REF, RL=200L, desc='', smoothing_spline=FALSE, cutoff=c(35, 140)) {
+
 	#Mask out reads in enriched regions
 	if (!is.null(enriched_regions)) {
 		catTime("Mask out reads in enriched regions", e={
@@ -47,7 +16,7 @@ GCCorrection <- function(ranges.raw, enriched_regions, nonMappableFilter, genome
 		cat("\tINFO: percentage of reads in non-enriched regions: ", round(100 * sum(is.na(ERoverlaps))/length(ranges.raw), 2), "%\n", sep='')
 	}
 	
-	#Calculate input GC content from 200bp extended reads (ranges.raw)
+	#Calculate input GC content from RL [200bp] extended reads (ranges.raw)
 	catTime("Calculate input GCcontent", e={
 		GCcontent <- as.integer(letterFrequency(REF[ranges.raw], "GC"))
 	})
@@ -63,7 +32,7 @@ GCCorrection <- function(ranges.raw, enriched_regions, nonMappableFilter, genome
 			nonEnrichedMappableRegionsLogi <- nonMappableFilter
 		}
 		#Calculate GC pecrentage among the chromosomes
-		GC <- RleList( lapply(REF, function(x) Rle(letterFrequencyInSlidingView(x, 200, "GC") )) )
+		GC <- RleList( lapply(REF, function(x) Rle(letterFrequencyInSlidingView(x, RL, "GC") )) )
     
 		#Select only on-enriched regions and mappable regions
 		GCgenome <- GC[nonEnrichedMappableRegionsLogi]	
@@ -74,11 +43,11 @@ GCCorrection <- function(ranges.raw, enriched_regions, nonMappableFilter, genome
 
 	#Calculate histograms for genomic (a) nad and sample (b) GC content
 	catTime("Calculate histograms for genomic (a) nad and sample (b) GC content", e={
-		a <- hist(as.integer(unlist(GCgenome, use.names=FALSE)), 0:200, plot=FALSE)
+		a <- hist(as.integer(unlist(GCgenome, use.names=FALSE)), 0:RL, plot=FALSE)
 		if (!is.null(enriched_regions)) {
-			b <- hist(GCcontent[is.na(ERoverlaps)], 0:200, plot=F)
+			b <- hist(GCcontent[is.na(ERoverlaps)], 0:RL, plot=F)
 		} else {
-			b <- hist(GCcontent, 0:200, plot=FALSE)
+			b <- hist(GCcontent, 0:RL, plot=FALSE)
 		}
 	
 		pdf(sprintf("IMG - GCdistribution - %s.pdf", desc), width = 12.0, height = 7.5, onefile = FALSE, paper = "special", encoding = "TeXtext.enc")
@@ -108,14 +77,14 @@ GCCorrection <- function(ranges.raw, enriched_regions, nonMappableFilter, genome
 		#2) Boxplot
 		scales[ scales %in% boxplot(scales, plot=F)$out ] <- NA
 		#3) Fixed
-		scales[c( 1:(cutoff[1]-1), (cutoff[2]+1):200 )] <- NA
+		scales[c( 1:(cutoff[1]-1), (cutoff[2]+1):RL )] <- NA
 		abline(h=0, v=c(cutoff[1], cutoff[2]), col = "gray60")
 		
 		
 		#Roboust prediction of scaling ceficient by fitting a cubic smoothing spline to the supplied data.
-		SSpoints <- cbind(1:200, scales)[!is.na(scales) & !(scales %in% boxplot(scales, plot=F)$out), ]	
+		SSpoints <- cbind(1:RL, scales)[!is.na(scales) & !(scales %in% boxplot(scales, plot=F)$out), ]	
 		SS <- smooth.spline(SSpoints, df=10)
-		scales.fit <- cbind(predict(SS, 0:200)$x, predict(SS, 0:200)$y)
+		scales.fit <- cbind(predict(SS, 0:RL)$x, predict(SS, 0:RL)$y)
 		lines(scales.fit, col="green")
 		
 		if (smoothing_spline) {
@@ -151,20 +120,15 @@ GCCorrection <- function(ranges.raw, enriched_regions, nonMappableFilter, genome
 	#Mask nonGC correctable regions
 	catTime("Masking non-GCcorrectable regions", e={
 		notGCcorrectableReads <- IntegerList( sapply( names( REF ), function(x) {  
-			GCchr <- letterFrequencyInSlidingView(REF[[x]], 200, "GC")
+			GCchr <- letterFrequencyInSlidingView(REF[[x]], RL, "GC")
 			which( ! (GCchr >= cutoff[1] & GCchr <= cutoff[2]) )
 		}) )
-		#notGCcorrectableRegions <- GRanges(seqnames=as.data.frame(notGCcorrectableReads)$space, ranges=IRanges(as.data.frame(notGCcorrectableReads)$value, width=200))
-		notGCcorrectableRegions <- GRanges(seqnames=Rle(names(notGCcorrectableReads), sapply(notGCcorrectableReads, length)), ranges=IRanges(unlist(notGCcorrectableReads), width=200))
+		#notGCcorrectableRegions <- GRanges(seqnames=as.data.frame(notGCcorrectableReads)$space, ranges=IRanges(as.data.frame(notGCcorrectableReads)$value, width=RL))
+		notGCcorrectableRegions <- GRanges(seqnames=Rle(names(notGCcorrectableReads), sapply(notGCcorrectableReads, length)), ranges=IRanges(unlist(notGCcorrectableReads), width=RL))
 		#seqlengths(notGCcorrectableRegions) <- seqlengths( REF )
-		notGCcorrectableRegions <- c(notGCcorrectableRegions, GRanges(seqnames=seqlevels( REF ), ranges=IRanges( seqlengths( REF )-199, width=200) ))
+		notGCcorrectableRegions <- c(notGCcorrectableRegions, GRanges(seqnames=seqlevels( REF ), ranges=IRanges( seqlengths( REF )-(RL-1), width=RL) ))
 		cov.r[ coverage(notGCcorrectableRegions)[names(cov.r)] > 0 ] <- NA
 	})
 
 	return(cov.r)
-}
-
-catTime <- function(..., e=NULL, file="", gc=FALSE) {
-	cat(..., "...", sep="", file=file, append=TRUE)
-	cat("\t<", system.time(e, gcFirst=gc)[3], "s>\n", sep="", file=file, append=TRUE)	
 }

@@ -18,19 +18,6 @@ beads_bamFiles <- function(bam.file, bam.control, mappability, uniq=TRUE, sample
   
   sample.norm <- DivStep(sample.map, control.map, sample.er)
   
-  toBW <- function(grm, name) {
-    message('Exporting to BigWiggle: ', name)
-    
-    input <- get(grm)
-    if(class(input) == 'GRanges')
-      input <- coverage(input)
-    
-    gr <- as(input, 'GRanges')
-    gr <- gr[!is.na(gr$score)]
-    gr <- gr[!is.infinite(gr$score)]
-    export.bw(gr, reName(bam.file, name, 'linear', '1bp', '.bw') )
-  }
-  
   exp <- list('control.re', 'control.gc', 'control.map', 'sample.coverage', 'sample.gc', 'sample.map', 'sample.norm')
   names(exp) <- c('control_readsCoverage', 'control_GCcorected', 'control.GCandMap', 'readsCoverage', 'GCcorected', 'GCandMap', 'BEADS')
   lapply( names(exp[export]), function(x) toBW(exp[[x]], x) )
