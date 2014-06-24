@@ -1,28 +1,30 @@
 Package: rbeads
 Title: R implementation of Bias Elimination Algorithm for Deep Sequencing
 Version: 0.3.0
-Authors.R: c(person("Przemyslaw", "Stempor", role = c("aut", "cre"), email = "ps562@cam.ac.uk"))
+Authors.R: c(person("Przemyslaw", "Stempor", role = c("aut", "cre"), email =
+    "ps562@cam.ac.uk"))
 Description: BEADS is a normalization scheme that corrects nucleotide
- composition bias, mappability variations and differential local DNA
- structural effects in deep sequencing data. In high-throughput sequencing
- data, the recovery of sequenced DNA fragments is not uniform along the
- genome. In particular, GC-rich sequences are often over-represented and
- AT-rich sequences under-represented in sequencing data. In addition, the
- read mapping procedure also generates regional bias. Sequence reads that
- can be mapped to multiple sites in the genome are usually discarded.
- Genomic regions with high degeneracy therefore show lower mapped read
- coverage than unique portions of the genome. Mappability varies along the
- genome and thus creates systematic bias. Futhermore, local DNA or chromatin
- structural effects can lead to coverage inhomogeneity of sequencing data.
-Depends: 
- R (>= 2.12.1),
- Rsamtools,
- digest,
- rtracklayer,
- GenomicRanges,
- BSgenome
+    composition bias, mappability variations and differential local DNA
+    structural effects in deep sequencing data. In high-throughput sequencing
+    data, the recovery of sequenced DNA fragments is not uniform along the
+    genome. In particular, GC-rich sequences are often over-represented and
+    AT-rich sequences under-represented in sequencing data. In addition, the
+    read mapping procedure also generates regional bias. Sequence reads that
+    can be mapped to multiple sites in the genome are usually discarded.
+    Genomic regions with high degeneracy therefore show lower mapped read
+    coverage than unique portions of the genome. Mappability varies along the
+    genome and thus creates systematic bias. Futhermore, local DNA or chromatin
+    structural effects can lead to coverage inhomogeneity of sequencing data.
+Depends:
+    R (>= 2.12.1),
+    Rsamtools,
+    digest,
+    rtracklayer,
+    GenomicRanges,
+    BSgenome
 License: LGPL
 LazyData: true
 Type: Package
 Date: 2014-04-14
-Suggests: testthat
+Suggests:
+    testthat

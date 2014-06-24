@@ -1,68 +1,34 @@
-# TODO: Add comment
-# 
-# Author: przemol
-###############################################################################
-
-
-# TODO: Add comment
-# 
-# Author: przemol
-###############################################################################
-
-
-# TODO: Add comment
-# 
-# Author: przemol
-if(0){
-	files <- sapply( dir(pattern="Ranges.+Rdata"), function(x) {cat("Loading:", x, "\n"); return(load(x, envir=.GlobalEnv))} )
-	gsub("(\\W|get)", "_", deparse(substitute(get("a"))), perl=T)
+# Przemyslaw Stempor, 2014
+##############################################################################
+EnrichedRegions <- function(ranges.raw, REF=NULL ) {
 	
-	ERandBin <- function(files) {
-		for(file in files) {
-			desc <- sprintf("%s_OS", unlist(strsplit(file, "\\."))[1])
-			varname <- desc
-			assign(varname, importBAM(file, desc=desc, resize_length=200, quality_cutoff=10, export_bin=TRUE, export_track=TRUE)) 
-				
-			#varname <- load(file)
-			rB.EnrichedRegions.OS(get(varname), desc=desc )
-			#binTrack(coverage(get(varname)), n=25, smooth=FALSE, out=sprintf("%s.wig", desc), type="WIG")
-		}
-	} 
-	ERandBin( dir(pattern="RawRanges.+Rdata") )
-	ERandBin( dir(pattern="bam") )
-	
-}
-#	
-#
-###############################################################################
-require(GenomicRanges)
-require(rtracklayer)
-#library(multicore)
-
-EnrichedRegions <- function(ranges.raw, desc="EnrichedRegions1" ) {
-	
-	
-	cat("GC correction - peak calling", "\n")
-	
-	#INTEGRATED PEAK CALLER
+	#INTEGRATED "PEAK CALLER"
 	
 	#Calculate coverage
 	catTime("Calculate coverage", e={
+    
 				combExtCoverRep1 <- coverage(ranges.raw)
+				sorted <-  lapply(combExtCoverRep1, sort)
+				tabulation <- lapply(sorted, function(y) {
+				  cbind(value=as.numeric(runValue(y)), length=as.numeric(runLength(y)))
+				})
+				tabulation <- do.call(rbind, tabulation)
+				tabulation <- tapply(tabulation[,'length'], tabulation[,'value'], sum)
+				a <- as.integer(names(tabulation))[ which.max( cumsum(tabulation) / sum(tabulation) >= .75 ) ]
+        
 			})	
-	
+	message('INFO: a = ', a)
+  
 	#Do peak calling
-	catTime("Do peak calling", e={
-				a = mean(quantile(combExtCoverRep1, .75))
-				enriched_regions <- slice(combExtCoverRep1, lower = a)
-				peakSumsRep1 <-viewSums(enriched_regions)
-				enriched_regions <- RangedData(as( enriched_regions[peakSumsRep1 >= quantile(peakSumsRep1[[3]], .90)] , "IRangesList"))
+	catTime("Calling enriched regions", e={
+				enriched_regions <- slice(combExtCoverRep1, lower = a )
+				peakSumsRep1 <- viewSums(enriched_regions)
+				enriched_regions <- RangedData(as( enriched_regions[peakSumsRep1 >= quantile(unlist(peakSumsRep1), .90)] , "IRangesList"))
+				enriched_regions <- as( enriched_regions , 'GRanges' )
+        seqinfo(enriched_regions) <- seqinfo(ranges.raw)[seqlevels(enriched_regions)]
+        #if( !is.null(REF) ) seqlengths(enriched_regions) <- seqlengths(REF)[seqlevels(enriched_regions)]
 			})
 	
-	#INFO: prepare the peak calling bed file to view in IGB/IGV
-	#catTime("INFO: prepare the peak calling bed file to view in IGB/IGV", e={															
-	#			export.bed(enriched_regions, "ERpeakCall.bed")	
-	#		})
 	return(enriched_regions)
 }
 

@@ -1,4 +1,4 @@
-beads_bam_bw  <- function(bam.file, bw.control, bw.mappability, genome, uniq=TRUE, insert=200L, mapq_cutoff=10L, export='BEADS', rdata=FALSE, quickMap=TRUE) {
+beads_bam_bam <- function(bam.file, bam.control, bw.mappability, genome, uniq=TRUE, insert=200L, mapq_cutoff=10L, export='BEADS', rdata=FALSE, quickMap=TRUE) {
   
   #Importing refference genome
   message('Importing refference genome...')
@@ -21,7 +21,11 @@ beads_bam_bw  <- function(bam.file, bw.control, bw.mappability, genome, uniq=TRU
 
   #Loading input from BigWig file
   message('Importing input...')
-  control.map <- import.bw(bw.control, as="RleList")
+  control.re <-  ImportBAM(bam.control, REF=REF, uniq=uniq, resize_length=insert, quality_cutoff=mapq_cutoff)
+  control.gc <-  GCCorrection(control.re, enriched_regions=NULL, REF=REF, nonMappableFilter=MAPF, RL=insert, desc=gsub('_control.bam$', '', basename(bam.file)), smoothing_spline=FALSE)
+  message('Smoothing...')
+  #control.gc <-  round( runmean(control.gc, ifelse(insert %% 2 == 0, insert+1, insert), endrule = "constant"), 2 )
+  control.map <- MappabilityCorrection(GCnormTrack=control.gc, mappabilityTrack=MAP)
   
   #Full beads
   sample.re <-   ImportBAM(bam.file, REF=REF, uniq=uniq, resize_length=insert, quality_cutoff=mapq_cutoff)
@@ -32,7 +36,7 @@ beads_bam_bw  <- function(bam.file, bw.control, bw.mappability, genome, uniq=TRU
   sample.norm <- DivStep(sample.map, control.map)
   
   message('Exporing BigWig tracks...')
-  exp <- list('control.re', 'control.gc', 'control.map', 'sample.coverage', 'sample.gc', 'sample.map', 'sample.norm')
+  exp <- list('control.re', 'control.gc', 'control.map', 'sample.re', 'sample.gc', 'sample.map', 'sample.norm')
   names(exp) <- c('control_readsCoverage', 'control_GCcorected', 'control_GCandMap', 'readsCoverage', 'GCcorected', 'GCandMap', 'BEADS')
   lapply( names(exp[export]), function(x) toBW_missing(get(exp[[x]]), x, basename(bam.file)) )
   

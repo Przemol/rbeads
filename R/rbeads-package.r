@@ -16,14 +16,11 @@
 #'  License: \tab LGPL\cr
 #'  LazyLoad: \tab yes\cr
 #' }
-#' <<echo=FALSE>>=
-#' <<double>>
-#'   rnorm(1)
-#' 
 #' 
 #' @keywords CHiP-seq beads
 #' @examples example(beads)
 #' 
-#' @import IRanges Rsamtools digest rtracklayer GenomicRanges BSgenome
+#' @import Rsamtools digest rtracklayer GenomicRanges BSgenome IRanges
+#' @importFrom IRanges unlist
 #' @exportPattern ^[[:alpha:]]+
 NULL
