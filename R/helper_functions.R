@@ -39,3 +39,12 @@ getREF <- function(genome) {
   }
   return(REF)
 }
+
+binRle2Rle <- function(input, bin=25L, precision=0L) {
+  out <- RleList(sapply(names(input), function(chr) {
+    br <- breakInChunks(length(input[[chr]]), bin)
+    sc <- round(viewMeans(Views(input[[chr]], br), na.rm = TRUE), precision)
+    Rle(sc, width(br))
+  }))
+  return(out)
+}

@@ -1,4 +1,4 @@
-beads_bam_bam <- function(bam.file, bam.control, bw.mappability, genome, uniq=TRUE, insert=200L, mapq_cutoff=10L, export='BEADS', rdata=FALSE, quickMap=TRUE) {
+beads_bam_bam <- function(bam.file, bam.control, bw.mappability, genome, uniq=TRUE, insert=200L, mapq_cutoff=10L, export='BEADS', rdata=FALSE, export_er=TRUE, quickMap=TRUE) {
   
   #Importing refference genome
   message('Importing refference genome...')
@@ -22,8 +22,8 @@ beads_bam_bam <- function(bam.file, bam.control, bw.mappability, genome, uniq=TR
   #Loading input from BigWig file
   message('Importing input...')
   control.re <-  ImportBAM(bam.control, REF=REF, uniq=uniq, resize_length=insert, quality_cutoff=mapq_cutoff)
-  control.gc <-  GCCorrection(control.re, enriched_regions=NULL, REF=REF, nonMappableFilter=MAPF, RL=insert, desc=gsub('_control.bam$', '', basename(bam.file)), smoothing_spline=FALSE)
-  message('Smoothing...')
+  control.gc <-  GCCorrection(control.re, enriched_regions=NULL, REF=REF, nonMappableFilter=MAPF, RL=insert, desc=gsub('.bam$', '', basename(bam.control)), smoothing_spline=FALSE)
+  #message('Smoothing...')
   #control.gc <-  round( runmean(control.gc, ifelse(insert %% 2 == 0, insert+1, insert), endrule = "constant"), 2 )
   control.map <- MappabilityCorrection(GCnormTrack=control.gc, mappabilityTrack=MAP)
   
@@ -35,15 +35,21 @@ beads_bam_bam <- function(bam.file, bam.control, bw.mappability, genome, uniq=TR
   
   sample.norm <- DivStep(sample.map, control.map)
   
+  if(export_er) {
+    message('Exporing ER...')
+    export.bed(sample.er, file(gsub('.bam$', '_EnrichedRegions.bed', basename(bam.file))) )
+  }
+  if(rdata) { 
+    message('Exporing Rdata binaries...')
+    save( list = ls(), file = gsub('.bam$', '.Rdata', basename(bam.file)), envir = environment() ) 
+  }
+  
   message('Exporing BigWig tracks...')
   exp <- list('control.re', 'control.gc', 'control.map', 'sample.re', 'sample.gc', 'sample.map', 'sample.norm')
   names(exp) <- c('control_readsCoverage', 'control_GCcorected', 'control_GCandMap', 'readsCoverage', 'GCcorected', 'GCandMap', 'BEADS')
   lapply( names(exp[export]), function(x) toBW_missing(get(exp[[x]]), x, basename(bam.file)) )
   
-  if(rdata) { 
-    message('Exporing Rdata binaries...')
-    save( list = ls(), file = gsub('.bam$', '.Rdata', basename(bam.file)), envir = environment() ) 
-  }
+
   
   return(TRUE)
   

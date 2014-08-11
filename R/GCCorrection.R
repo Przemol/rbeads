@@ -25,7 +25,7 @@ GCCorrection <- function(ranges.raw, enriched_regions, nonMappableFilter, REF, R
 			#Calculate logical vectors of non-enriched regions
 			nonEnrichedRegionsLogi <- !coverage( enriched_regions )
 			#Perform logical sum of non-enriched regions and mappable regions
-			nonEnrichedMappableRegionsLogi <- nonEnrichedRegionsLogi & nonMappableFilter
+			nonEnrichedMappableRegionsLogi <- nonEnrichedRegionsLogi & nonMappableFilter[names(nonEnrichedRegionsLogi)]
 		} else {
 			nonEnrichedMappableRegionsLogi <- nonMappableFilter
 		}

@@ -16,7 +16,7 @@ DivStep <- function(sample, control) {
 	  })
 	  tabulation <- do.call(rbind, tabulation)
 	  tabulation <- tapply(tabulation[,'length'], tabulation[,'value'], sum)
-	  tabulation <- tabulation[names(tabulation)!=0]
+	  #tabulation <- tabulation[names(tabulation)!=0]
 	  aa <- as.numeric(names(tabulation))[ which.max( cumsum(tabulation) / sum(tabulation) >= .5 ) ]
     
     divstep <- round(divstep / aa, 3)
