@@ -1,3 +1,13 @@
+#' BEADS internal
+#' 
+#' The function runs BEADS for signature BAM, BW, BW, ANY: \cr
+#' \code{signature(c(experiment='BamFile', control='BigWigFile', mappability='BigWigFile', genome='ANY'))}
+#' 
+#' This function is package internal and should not be executed directly
+#' by users.
+#' 
+#' @keywords internal
+#'    
 beads_bam_bam <- function(bam.file, bam.control, bw.mappability, genome, uniq=TRUE, insert=200L, mapq_cutoff=10L, export='BEADS', rdata=FALSE, export_er=TRUE, quickMap=TRUE) {
   
   #Importing refference genome
@@ -36,8 +46,8 @@ beads_bam_bam <- function(bam.file, bam.control, bw.mappability, genome, uniq=TR
   sample.norm <- DivStep(sample.map, control.map)
   
   if(export_er) {
-    message('Exporing ER...')
-    export.bed(sample.er, file(gsub('.bam$', '_EnrichedRegions.bed', basename(bam.file))) )
+    message('Exporing ER...'); er_con <- file(gsub('.bam$', '_EnrichedRegions.bed', basename(bam.file)))
+    export.bed(sample.er, er_con); close(er_con)
   }
   if(rdata) { 
     message('Exporing Rdata binaries...')
@@ -47,10 +57,9 @@ beads_bam_bam <- function(bam.file, bam.control, bw.mappability, genome, uniq=TR
   message('Exporing BigWig tracks...')
   exp <- list('control.re', 'control.gc', 'control.map', 'sample.re', 'sample.gc', 'sample.map', 'sample.norm')
   names(exp) <- c('control_readsCoverage', 'control_GCcorected', 'control_GCandMap', 'readsCoverage', 'GCcorected', 'GCandMap', 'BEADS')
-  lapply( names(exp[export]), function(x) toBW_missing(get(exp[[x]]), x, basename(bam.file)) )
+  bw_lst <- lapply( names(exp[export]), function(x) toBW_missing(get(exp[[x]]), x, basename(bam.file)) )
   
-
-  
-  return(TRUE)
+  names(bw_lst) <- names(exp[export])
+  return(invisible( new("BigWigFileList", listData=bw_lst) ))
   
 }

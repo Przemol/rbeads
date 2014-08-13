@@ -33,8 +33,8 @@
 #' 
 #' @references http://beads.sourceforge.net/
 #' @author Przemyslaw Stempor
-#' @keywords beads
-#' @export
+#' 
+#' @keywords internal
 #' 
 #' @examples
 #' source("http://bioconductor.org/biocLite.R")
@@ -43,8 +43,7 @@
 #' require(BSgenome.Celegans.UCSC.ce10)
 #' require(rbeads)
 #' beads(config='BeadsConfig.csv')
-
-
+#' 
 beads_batch <-
 function(config='BeadsConfig.csv') {
 	

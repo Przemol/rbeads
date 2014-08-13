@@ -2,3 +2,8 @@
 create.R$
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^R/ImportSolexa\.R$
+^R/beads_batch\.R$
+^inst/tests/advanced_test\.sh$
+^inst/tests/advanced_tests\.R$
+^man/beads_batch\.Rd$

@@ -1,8 +1,8 @@
 Package: rbeads
 Title: R implementation of Bias Elimination Algorithm for Deep Sequencing
-Version: 0.3.0
-Authors.R: c(person("Przemyslaw", "Stempor", role = c("aut", "cre"), email =
-    "ps562@cam.ac.uk"))
+Version: 0.3.1
+Author: Przemyslaw Stempor <ps562@cam.ac.uk>
+Maintainer: Przemyslaw Stempor <ps562@cam.ac.uk>
 Description: BEADS is a normalization scheme that corrects nucleotide
     composition bias, mappability variations and differential local DNA
     structural effects in deep sequencing data. In high-throughput sequencing
@@ -16,12 +16,16 @@ Description: BEADS is a normalization scheme that corrects nucleotide
     genome and thus creates systematic bias. Futhermore, local DNA or chromatin
     structural effects can lead to coverage inhomogeneity of sequencing data.
 Depends:
-    R (>= 2.12.1),
-    Rsamtools,
+    R (>= 3.1.0)
+Imports:
+    methods,
+    IRanges,
+    BSgenome,
     digest,
+    Rsamtools,
     rtracklayer,
     GenomicRanges,
-    BSgenome
+    Biostrings
 License: LGPL
 LazyData: true
 Type: Package

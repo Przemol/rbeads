@@ -1,76 +1,121 @@
-#' BEADS normaliztion algorithm
-#'
-#' This function should be started ni the BAM/Solexa data directory. 
-#' It inputs CSV config file and run BEADS algoritm with specified settings.
-#' http://genome.ucsc.edu/cgi-bin/hgFileUi?db=hg19&g=wgEncodeMapability
-#' http://www.plosone.org/article/fetchObject.action?uri=info%3Adoi%2F10.1371%2Fjournal.pone.0030377&representation=PDF
-#' http://wiki.bits.vib.be/index.php/Create_a_mappability_track
+#' BEADS normalization algorithm for ChIP-seq experiments 
 #' 
-#' @param config Configuration file in CSV format.
-#' @return LogFile - Read the log file for further run info.
+#' The function runs BEAD algorithm on aligned files. It requires short read alignment 
+#' in \href{http://genome.ucsc.edu/goldenPath/help/bam.html}{BAM format}, 
+#' input track (either single experiment \href{http://genome.ucsc.edu/goldenPath/help/bam.html}{BAM}
+#' or summed input created using \code{\link{sumBAMinputs}} function), mappability track in 
+#' \href{http://genome.ucsc.edu/goldenPath/help/bigWig.html}{BigWig format} (see details) 
+#' and reference genome in \href{http://en.wikipedia.org/wiki/FASTA_format}{FASTA fomat} 
+#' or as \code{\link[BSgenome]{BSgenome}} genomic package.
+#'
+#' @param experiment The path to experiment (sample) alignment file in BAM format or \code{\link[Rsamtools]{BamFile}} class.
+#' @param control The path to control (input) alignment file in BAM format or summed input file in BigWiggle format (accepts \code{\link[Rsamtools]{BamFile}} and \code{\link[rtracklayer]{BigWigFile}} classes as well).
+#' @param mappability The path to mappability track in BigWiggle format (accepts \code{\link[rtracklayer]{BigWigFile}} class as well).
+#' @param genome The path reference genome FASTA or UCSC identifier for installed \code{\link[BSgenome]{BSgenome}} packages e.g. "hg19" for human
+#' @param uniq If TRUE the alignment will be uniqued, i.e. only one of non-unique reads will be used.
+#' @param insert The expected insert size in base pairs.
+#' @param mapq_cutoff The cutoff parameter used to filter BAM alignments for low mapping quality reads.
+#' @param export The character vector of BW tracks to be exported.
+#' @param rdata If TRUE all data will be exported as R binaries in addition to BigWiggle tracks.
+#' @param export_er If TRUE the enriched regions will be exported to BED format.
+#' @param quickMap If TRUE the quick mappability processing be used, otherwise the mappability track will be processed by running mean smoothing.
+#' @param ... parameters passed by reference to rbeads internal functions.
+#'  
+#' @return Named \code{\link[rtracklayer]{BigWigFileList}} containing exported BW file connections.
 #' 
 #' @details
-#'  rBEADS configuration file are 4 columns Comma Separated Values (CSV) tables. They can be created using any spreadsheet editor or plain text editor. The structure of sample input file:
-#'  \preformatted{
-#'    Sample,Control,rep,ER
-#'    ChIPFile1.bam,InputFile1.bam,rep1,ERfile.bed
-#'    ChIPFile2.bam,FRM,rep2a,none
-#'    ChIPFile3.bam,EGS,rep2b,auto
-#'  }
+#' Mappability/alignability tracks gives numeric score for level of reference sequence uniqueness.
+#' Short reads cannot be confidently aligned to non-unique sequences, so BEADS masks the out.
+#' The pre-calculated tracks can be found id genome databases for many species, e.g. following link 
+#' gives the collection of human tracks for reference genome GRCh37/hg19:
+#' \url{http://genome.ucsc.edu/cgi-bin/hgTrackUi?hgsid=340327143&g=wgEncodeMapability}.
 #' 
-#'  The tabular structure:
-#'  \tabular{llll}{
-#'    Sample \tab Control \tab rep \tab ER \cr
-#'    ChIPFile1.bam \tab InputFile1.bam \tab rep1 \tab ERfile.bed \cr
-#'    ChIPFile2.bam \tab FRM \tab rep2a \tab none \cr
-#'    ChIPFile3.bam \tab EGS \tab rep2b \tab auto \cr 
-#'   }
+#' For other species mappability track can be easily calculated from reference FASTA file
+#' using GEM-mappability software (\url{http://www.ncbi.nlm.nih.gov/pubmed/22276185}).
+#' The following example illustrates the procedure for \emph{C. elegans} reference genome
+#' (36bp read length and 8 parallel threads set in options):
 #' 
-#'  The \code{Sample} column contains ChIP experiment aligned short reads files.
+#' \code{gem-indexer -i ce10.fa -o ce10 -T 8}\cr
+#' \code{ggem-mappability -I ce10.gem -l 36 -o ce10 -T 8}\cr
+#' \code{ggem-2-wig -I ce10.gem -i ce10.map -o ce10}\cr
+#' \code{gwigToBigWig ce10.wig ce10.chrom.sizes ce10.bw}
 #' 
-#'  The \code{Control} column contains Input file corresponding to ChIP experiment. This filed may hold 2 special values - \code{EGS} forces BEADS wrapper to use pre-calculate EGS summed input track shipped with R package. Similarly \code{FRM} value indicates using summed formaldehyde input (also available in rBEADS package).
+#' By default only BEADS normalized track is exported. The export files can be 
+#' control by \code{export} parameter,  which is the character vector containing 
+#' following values: 
+#' \describe{
+#'  \item{\code{'BEADS'}}{fully normalized files, i.e. GC correction, mappability correction, division by input and scaling by median}
+#'  \item{\code{'GCandMap'}}{GC correction and mappability correction}
+#'  \item{\code{'GCcorected'}}{GC correction}
+#'  \item{\code{'readsCoverage'}}{raw reads coverage, after extending to \code{insert} 
+#'    length, filtering /code{mapq_cutoff} and uniquing if \code{uniq}}
+#'  \item{\code{'control_GCandMap'}}{GC normalized and mappability corrected input, only works if input is a BAM file}
+#'  \item{\code{'control_GCcorected'}}{GC normalized, only works if input is a BAM file}
+#'  \item{\code{'control_readsCoverage'}}{input raw reads coverage, after extending to
+#'    \code{insert} length, filtering \code{mapq_cutoff} and uniquing if 
+#'    \code{uniq}, only works if input is a BAM file}
+#' }
+#' For example: \code{  beads(sample_bam, input_bam, map, fa, export=c('control_readsCoverage', 'control_GCcorected', 'control_GCandMap', 'readsCoverage', 'GCcorected', 'GCandMap', 'BEADS'))}
 #' 
-#'  \code{rep} column is not currently used by and have been incorporated to easier organize coning table. This filed can hold any value (excluding commas).
+#' @references \url{http://beads.sourceforge.net/} \cr \url{http://www.ncbi.nlm.nih.gov/pubmed/21646344}
 #' 
-#'  The last column - \code{ER} - indicates which enriched regions should be used in BEADS run. The \code{auto} value indicates build in rBEADS algorithm for finding enriched regions, while \code{none} switches off enriched regions masking from the algorithm (useful for testing input files). Finally, if user decides to use external enriched regions finder (e. g. by peak calling) this field may take BED file name.
-#' 
-#' @references http://beads.sourceforge.net/
 #' @author Przemyslaw Stempor
-#' @keywords beads
 #' @export
 #' 
 #' @examples
-#' source("http://bioconductor.org/biocLite.R")
-#' biocLite("BSgenome.Celegans.UCSC.ce10")
+#' # Get the paths of example files
+#' sample_bam <- system.file("extdata", "GSM1208360_chrI_100Kb_q5_sample.bam", package="rbeads")
+#' input_bam <- system.file("extdata", "Input_fE3_AA169.bam", package="rbeads")
+#' SummedInput_bw <- system.file("extdata", "Ce10_HiSeqFRMInput_UNIQ_bin25bp_chrI_100Kb_sample.bw", package="rbeads")
+#' map_bw <- system.file("extdata", "ce10_mappability_chrI_100Kb_sample.bw", package="rbeads")
+#' ref_fa <- system.file("extdata", "ce10_chrI_100Kb_sample.fa", package="rbeads")
 #' 
-#' require(BSgenome.Celegans.UCSC.ce10)
-#' require(rbeads)
-#' beads(config='BeadsConfig.csv')
-
-
-
+#' # Set the directory where the output files will be crated
+#' setwd(tempdir())
+#' 
+#' # Run BEADS for BAM input file
+#' beads(sample_bam, input_bam, map_bw, ref_fa)
+#' 
+#' # Run BEADS for SummedInput (BigWig) input file
+#' beads(sample_bam, SummedInput_bw, map_bw, ref_fa)
+#' 
+#' \dontrun{
+#' # Run BEADS for BSgenome package, the reference genome package have to be installed prior to running this example
+#' # source("http://bioconductor.org/biocLite.R")
+#' # biocLite("BSgenome.Celegans.UCSC.ce10")
+#' # library(BSgenome.Celegans.UCSC.ce10)
+#' beads(sample_bam, SummedInput_bw, map_bw, genome='ce10')
+#' }
+#' 
 setGeneric("beads",
-  function(experiment, control, mappability, genome, uniq=TRUE, insert=200L, mapq_cutoff=10L, export='BEADS', rdata=FALSE, quickMap=TRUE, ...) 
+  function(experiment, control, mappability, genome, uniq=TRUE, insert=200L, mapq_cutoff=10L, export='BEADS', rdata=FALSE, export_er=TRUE, quickMap=TRUE, ...) 
   standardGeneric("beads")
 )
 
+#' @describeIn beads Method for signature experiment='BamFile', control='BamFile', mappability='BigWigFile', genome='ANY'
 setMethod("beads", signature(experiment='BamFile', control='BamFile', mappability='BigWigFile', genome='ANY'),
   function(experiment, control, mappability, genome, uniq=TRUE, insert=200L, mapq_cutoff=10L, export='BEADS', rdata=FALSE, quickMap=TRUE,...) {
     beads_bam_bam(path(experiment), path(control), mappability, genome, uniq, insert, mapq_cutoff, export, rdata, quickMap, ...)
   }
 )
 
+#' @describeIn beads Method for signature experiment='BamFile', control='BigWigFile', mappability='BigWigFile', genome='ANY'
 setMethod("beads", c(experiment='BamFile', control='BigWigFile', mappability='BigWigFile', genome='ANY'),
   function(experiment, control, mappability, genome, uniq=TRUE, insert=200L, mapq_cutoff=10L, export='BEADS', rdata=FALSE, quickMap=TRUE, ...) {
     beads_bam_bw(path(experiment), control, mappability, genome, uniq, insert, mapq_cutoff, export, rdata, quickMap, ...)
   }
 )
 
+#' @describeIn beads Method for signature experiment='character', control='character', mappability='character', genome='character'
 setMethod("beads", signature(experiment='character', control='character', mappability='character', genome='character'),
   function(experiment, control, mappability, genome, uniq=TRUE, insert=200L, mapq_cutoff=10L, export='BEADS', rdata=FALSE, quickMap=TRUE, ...) {
     beads(FileForFormat(experiment), FileForFormat(control), FileForFormat(mappability), genome, uniq, insert, mapq_cutoff, export, rdata, quickMap, ...)
   }
 )
+
+.onAttach <- function(libname, pkgname) {
+  packageStartupMessage('The rbeads package ready, type "?beads" for help.')
+}
 
 
 

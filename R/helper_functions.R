@@ -16,8 +16,8 @@ toBW <- function(input, proc, name, missing2zero=FALSE) {
   export.bw(input, reName(name, proc, 'linear', '1bp', '.bw') )
 }
 
-toBW_missing <- function(input, proc, name) {
-  message('Exporting to BigWiggle: ', reName(name, proc, 'linear', '1bp', '.bw'))
+toBW_missing <- function(input, proc, name, resolution=1L) {
+  message('Exporting to BigWiggle: ', reName(name, proc, 'linear', paste0(resolution, 'bp'), '.bw'))
   if(class(input) == 'GRanges') {
     message('Calculating coverage from ranges')
     input <- coverage(input)
@@ -25,7 +25,7 @@ toBW_missing <- function(input, proc, name) {
   gr <- as(input, 'GRanges')
   gr <- gr[!is.na(gr$score)]
   gr <- gr[!is.infinite(gr$score)]
-  export.bw(gr, reName(name, proc, 'linear', '1bp', '.bw') )
+  export.bw(gr, reName(name, proc, 'linear', paste0(resolution, 'bp'), '.bw') )
 }
 
 getREF <- function(genome) {

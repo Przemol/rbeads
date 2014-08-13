@@ -1,4 +1,14 @@
-beads_bam_bw  <- function(bam.file, bw.control, bw.mappability, genome, uniq=TRUE, insert=200L, mapq_cutoff=10L, export='BEADS', rdata=FALSE, quickMap=TRUE) {
+#' BEADS internal
+#' 
+#' The function runs BEADS for signature BAM, BAM, BW, ANY: \cr
+#' \code{signature(experiment='BamFile', control='BamFile', mappability='BigWigFile', genome='ANY')}
+#' 
+#' This function is package internal and should not be executed directly
+#' by users.
+#' 
+#' @keywords internal
+#'  
+beads_bam_bw  <- function(bam.file, bw.control, bw.mappability, genome, uniq=TRUE, insert=200L, mapq_cutoff=10L, export='BEADS', rdata=FALSE, export_er=TRUE, quickMap=TRUE) {
   
   #Importing refference genome
   message('Importing refference genome...')
@@ -31,16 +41,21 @@ beads_bam_bw  <- function(bam.file, bw.control, bw.mappability, genome, uniq=TRU
   
   sample.norm <- DivStep(sample.map, control.map)
   
-  message('Exporing BigWig tracks...')
-  exp <- list('control.re', 'control.gc', 'control.map', 'sample.coverage', 'sample.gc', 'sample.map', 'sample.norm')
-  names(exp) <- c('control_readsCoverage', 'control_GCcorected', 'control_GCandMap', 'readsCoverage', 'GCcorected', 'GCandMap', 'BEADS')
-  lapply( names(exp[export]), function(x) toBW_missing(get(exp[[x]]), x, basename(bam.file)) )
-  
+  if(export_er) {
+    message('Exporing ER...'); er_con <- file(gsub('.bam$', '_EnrichedRegions.bed', basename(bam.file)))
+    export.bed(sample.er, er_con); close(er_con)
+  }
   if(rdata) { 
     message('Exporing Rdata binaries...')
     save( list = ls(), file = gsub('.bam$', '.Rdata', basename(bam.file)), envir = environment() ) 
   }
   
-  return(TRUE)
+  message('Exporing BigWig tracks...')
+  exp <- list('control.re', 'control.gc', 'control.map', 'sample.coverage', 'sample.gc', 'sample.map', 'sample.norm')
+  names(exp) <- c('control_readsCoverage', 'control_GCcorected', 'control_GCandMap', 'readsCoverage', 'GCcorected', 'GCandMap', 'BEADS')
+  bw_lst <- lapply( names(exp[export]), function(x) toBW_missing(get(exp[[x]]), x, basename(bam.file)) )
+  
+  names(bw_lst) <- names(exp[export])
+  return(invisible( new("BigWigFileList", listData=bw_lst) ))
   
 }

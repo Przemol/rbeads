@@ -14,3 +14,10 @@ my_description <- list(
   )
 system('rm -Rf rbeads')
 create('./rbeads', my_description, check=TRUE)
+
+
+##Create sample data
+export.bed(GRanges('chrI', IRanges(1, 100000)), 'tr.bed')
+'samtools view -q 5 -hL tr.bed $f > Input_fE3_AA169.sam'
+'cat Input_fE3_AA169.sam | samtools view -Sb - > Input_fE3_AA169.bam'
+'samtools index Input_fE3_AA169.bam'
