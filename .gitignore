@@ -1,3 +1,18 @@
-.Rproj.user
+# History files
 .Rhistory
-.RData
+
+# Example code in package build process
+*-Ex.R
+
+# R data files from past sessions
+.Rdata
+.Rproj.user
+
+# R data files from past sessions
+.Rdata
+
+# R IDE projects annotations
+*.Rproj
+
+# DS_Store files
+.DS_Store
