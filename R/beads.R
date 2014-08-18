@@ -31,10 +31,12 @@
 #' \url{http://genome.ucsc.edu/cgi-bin/hgTrackUi?hgsid=340327143&g=wgEncodeMapability}.
 #' 
 #' For other species mappability track can be easily calculated from reference FASTA file
-#' using GEM-mappability software (\url{http://www.ncbi.nlm.nih.gov/pubmed/22276185}).
+#' using GEM-mappability software (\url{http://www.ncbi.nlm.nih.gov/pubmed/22276185}). The 
+#' GEM library binaries are available on SourceForge: (\url{http://sourceforge.net/projects/gemlibrary/files/gem-library/}),
+#' while the reference genome FASTA file can be obtained from UCSC: (\url{http://hgdownload.soe.ucsc.edu/downloads.html}).
 #' The following example illustrates the procedure for \emph{C. elegans} reference genome
 #' (36bp read length and 8 parallel threads set in options):
-#' 
+#'
 #' \code{gem-indexer -i ce10.fa -o ce10 -T 8}\cr
 #' \code{ggem-mappability -I ce10.gem -l 36 -o ce10 -T 8}\cr
 #' \code{ggem-2-wig -I ce10.gem -i ce10.map -o ce10}\cr
