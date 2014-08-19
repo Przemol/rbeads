@@ -1,5 +1,7 @@
-rBEADS [![Build Status](https://travis-ci.org/Przemol/rbeads.svg?branch=master)](https://travis-ci.org/Przemol/rbeads)
+rBEADS
 ======
+
+[![Build Status](https://travis-ci.org/Przemol/rbeads.svg?branch=master)](https://travis-ci.org/Przemol/rbeads)
 
 >  **rBEADS** is the R implementation of Bias Elimination Algorithm for Deep Sequencing.
 
