@@ -1,6 +1,7 @@
 rBEADS
 ======
->  **rBEADS** - the R implementation of **B**ias **E**limination **A**lgorithm for **D**eep **S**equencing.
+
+>  **rBEADS** - the R implementation of <strong>B</strong>ias <strong>E</strong>limination <strong>A</strong>lgorithm for <strong>D</strong>eep <strong>S</strong>equencing.
 
 [![Build Status](https://travis-ci.org/Przemol/rbeads.svg?branch=master)](https://travis-ci.org/Przemol/rbeads)
 
