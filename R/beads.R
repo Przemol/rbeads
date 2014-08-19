@@ -38,9 +38,9 @@
 #' (36bp read length and 8 parallel threads set in options):
 #'
 #' \code{gem-indexer -i ce10.fa -o ce10 -T 8}\cr
-#' \code{ggem-mappability -I ce10.gem -l 36 -o ce10 -T 8}\cr
-#' \code{ggem-2-wig -I ce10.gem -i ce10.map -o ce10}\cr
-#' \code{gwigToBigWig ce10.wig ce10.chrom.sizes ce10.bw}
+#' \code{gem-mappability -I ce10.gem -l 36 -o ce10 -T 8}\cr
+#' \code{gem-2-wig -I ce10.gem -i ce10.map -o ce10}\cr
+#' \code{wigToBigWig ce10.wig ce10.chrom.sizes ce10.bw}
 #' 
 #' By default only BEADS normalized track is exported. The export files can be 
 #' control by \code{export} parameter,  which is the character vector containing 
