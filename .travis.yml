@@ -17,5 +17,4 @@ on_failure:
 
 notifications:
   email:
-    on_success: change
-    on_failure: change
+    on_failure: ps562@cam.ac.uk
