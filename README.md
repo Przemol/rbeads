@@ -28,3 +28,16 @@ Run following in R to load the library and see package help:
 library(rbeads)
 help(rbeads)
 ```
+R style reference manual (PDF) can be found [**here**](https://github.com/Przemol/rbeads/releases/download/v0.3.1-alpha/rbeads.pdf).
+
+## Mappability tracks
+
+Following pre-calculated mappabiliti tracks (BigWig files) are avilable ta the moment:
+* [```ce10_gem-mappability_36bp.bw```](https://github.com/Przemol/rbeads/releases/download/v0.3.1-alpha/ce10_gem-mappability_36bp.bw) - *C. elegans* mappability track for 36bp reads
+* [```dm3_gem-mappability_36bp.bw```](https://github.com/Przemol/rbeads/releases/download/v0.3.1-alpha/dm3_gem-mappability_36bp.bw)` - *D. melanogaster* mappability track for 36bp reads
+* [```wgEncodeCrgMapabilityAlign24mer.bigWig```](http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeMapability/wgEncodeCrgMapabilityAlign24mer.bigWig) - *H. sapiens* mappability track for 24bp reads (UCSC)
+* [```wgEncodeCrgMapabilityAlign36mer.bigWig```](http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeMapability/wgEncodeCrgMapabilityAlign36mer.bigWig) - *H. sapiens* mappability track for bp reads (UCSC)
+* [```wgEncodeCrgMapabilityAlign40mer.bigWig```](http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeMapability/wgEncodeCrgMapabilityAlign40mer.bigWig) - *H. sapiens* mappability track for bp reads (UCSC)
+* [```wgEncodeCrgMapabilityAlign50mer.bigWig ```](http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeMapability/wgEncodeCrgMapabilityAlign50mer.bigWig) - *H. sapiens* mappability track for bp reads (UCSC)
+* [```wgEncodeCrgMapabilityAlign75mer.bigWig```](http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeMapability/wgEncodeCrgMapabilityAlign75mer.bigWig) - *H. sapiens* mappability track for bp reads (UCSC)
+* [```wgEncodeCrgMapabilityAlign100mer.bigWig ```](http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeMapability/wgEncodeCrgMapabilityAlign100mer.bigWig) - *H. sapiens* mappability track for bp reads (UCSC)
