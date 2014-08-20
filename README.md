@@ -36,7 +36,7 @@ Following pre-calculated mappabiliti tracks (BigWig files) are avilable ta the m
 * [```ce10_gem-mappability_36bp.bw```](https://github.com/Przemol/rbeads/releases/download/v0.3.1-alpha/ce10_gem-mappability_36bp.bw) - *C. elegans* mappability track for 36bp reads
 * [```dm3_gem-mappability_36bp.bw```](https://github.com/Przemol/rbeads/releases/download/v0.3.1-alpha/dm3_gem-mappability_36bp.bw) - *D. melanogaster* mappability track for 36bp reads
 
-Human tracks from UCSC (http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeMapability/):
+Human tracks from [UCSC](http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeMapability/):
 * [```wgEncodeCrgMapabilityAlign24mer.bigWig```](http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeMapability/wgEncodeCrgMapabilityAlign24mer.bigWig) - *H. sapiens* mappability track for 24bp reads
 * [```wgEncodeCrgMapabilityAlign36mer.bigWig```](http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeMapability/wgEncodeCrgMapabilityAlign36mer.bigWig) - *H. sapiens* mappability track for 36bp reads
 * [```wgEncodeCrgMapabilityAlign40mer.bigWig```](http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeMapability/wgEncodeCrgMapabilityAlign40mer.bigWig) - *H. sapiens* mappability track for 40bp reads
