@@ -5,6 +5,14 @@ rBEADS
 
 [![Build Status](https://travis-ci.org/Przemol/rbeads.svg?branch=master)](https://travis-ci.org/Przemol/rbeads)
 
+:exclamation:  **RELEASE NOTE**  :exclamation:
+
+rBEADS is in pre-release (alpha) stage. The software is provided for testing purposes. Please report the problem, bugs, unexpected behaviors and missing features [here](../../issues/new).
+
+BEADS algorithm requires deep inputs (high reads coverage) to work properly. This means >50 million reads for worm and fly experiments and proportionally higher number for mammalian experiments. It is suggested to pool multiple input experiments using ```sumBAMinputs``` function from rBEADS package.
+
+## Introduction
+
 **BEADS** is a normalization scheme that corrects nucleotide composition bias, mappability variations and differential local DNA structural effects in deep sequencing data. In high-throughput sequencing data, the recovery of sequenced DNA fragments is not uniform along the genome. In particular, GC-rich sequences are often over-represented and AT-rich sequences under-represented in sequencing data. In addition, the read mapping procedure also generates regional bias. Sequence reads that can be mapped to multiple sites in the genome are usually discarded. Genomic regions with high degeneracy therefore show lower mapped read coverage than unique portions of the genome. Mappability varies along the genome and thus creates systematic bias. Furthermore, local DNA or chromatin structural effects can lead to coverage inhomogeneity of sequencing data.
 
 ## Installation
