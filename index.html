@@ -28,7 +28,23 @@
     <div id="content-wrapper">
       <div class="inner clearfix">
         <section id="main-content">
-          <p><a href="https://travis-ci.org/Przemol/rbeads"><img src="https://travis-ci.org/Przemol/rbeads.svg?branch=master" alt="Build Status"></a></p>
+          <h1>
+<a name="rbeads" class="anchor" href="#rbeads"><span class="octicon octicon-link"></span></a>rBEADS</h1>
+
+<blockquote>
+<p>The R implementation of <strong>B</strong>ias <strong>E</strong>limination <strong>A</strong>lgorithm for <strong>D</strong>eep <strong>S</strong>equencing.</p>
+</blockquote>
+
+<p><a href="https://travis-ci.org/Przemol/rbeads"><img src="https://travis-ci.org/Przemol/rbeads.svg?branch=master" alt="Build Status"></a></p>
+
+<p><img class="emoji" title=":exclamation:" alt=":exclamation:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/2757.png" height="20" width="20" align="absmiddle"><strong>RELEASE NOTE</strong>  <img class="emoji" title=":exclamation:" alt=":exclamation:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/2757.png" height="20" width="20" align="absmiddle"></p>
+
+<p>rBEADS is in pre-release (alpha) stage. The software is provided for testing purposes. Please report the problem, bugs, unexpected behaviors and missing features <a href="../../issues/new">here</a>.</p>
+
+<p>BEADS algorithm requires deep inputs (high reads coverage) to work properly. This means &gt;50 million reads for worm and fly experiments and proportionally higher number for mammalian experiments. It is suggested to pool multiple input experiments using <code>sumBAMinputs</code> function from rBEADS package.</p>
+
+<h2>
+<a name="introduction" class="anchor" href="#introduction"><span class="octicon octicon-link"></span></a>Introduction</h2>
 
 <p><strong>BEADS</strong> is a normalization scheme that corrects nucleotide composition bias, mappability variations and differential local DNA structural effects in deep sequencing data. In high-throughput sequencing data, the recovery of sequenced DNA fragments is not uniform along the genome. In particular, GC-rich sequences are often over-represented and AT-rich sequences under-represented in sequencing data. In addition, the read mapping procedure also generates regional bias. Sequence reads that can be mapped to multiple sites in the genome are usually discarded. Genomic regions with high degeneracy therefore show lower mapped read coverage than unique portions of the genome. Mappability varies along the genome and thus creates systematic bias. Furthermore, local DNA or chromatin structural effects can lead to coverage inhomogeneity of sequencing data.</p>
 
@@ -44,7 +60,7 @@ biocLite<span class="p">(</span><span class="kt">c</span><span class="p">(</span
 <p>To install the latest development version directly from GitHub, run in R:</p>
 
 <div class="highlight highlight-r"><pre><span class="kr">if</span> <span class="p">(</span><span class="o">!</span><span class="kn">require</span><span class="p">(</span><span class="s">"devtools"</span><span class="p">))</span> install.packages<span class="p">(</span><span class="s">"devtools"</span><span class="p">)</span>
-devtools<span class="o">::</span>install_github<span class="p">(</span><span class="s">"przemol/rbeads"</span><span class="err">)</span>
+devtools<span class="o">::</span>install_github<span class="p">(</span><span class="s">"przemol/rbeads"</span><span class="p">)</span>
 </pre></div>
 
 <h2>
@@ -87,9 +103,13 @@ help<span class="p">(</span>rbeads<span class="p">)</span>
         </section>
 
         <aside id="sidebar">
-          <a href="https://github.com/Przemol/rbeads/releases/download/v0.3.1-alpha/rbeads.pdf" class="button">
-            <small>Download manual</small>
-            .pdf file
+          <a href="https://github.com/Przemol/rbeads/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/Przemol/rbeads/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
           </a>
 
           <p class="repo-owner"><a href="https://github.com/Przemol/rbeads"></a> is maintained by <a href="https://github.com/Przemol">Przemol</a>.</p>
