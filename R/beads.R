@@ -26,7 +26,7 @@
 #' @details
 #' Mappability/alignability tracks gives numeric score for level of reference sequence uniqueness.
 #' Short reads cannot be confidently aligned to non-unique sequences, so BEADS masks the out.
-#' The pre-calculated tracks can be found id genome databases for many species, e.g. following link 
+#' The pre-calculated tracks for many species can be found in genome databases, e.g. following link 
 #' gives the collection of human tracks for reference genome GRCh37/hg19:
 #' \url{http://genome.ucsc.edu/cgi-bin/hgTrackUi?hgsid=340327143&g=wgEncodeMapability}.
 #' 
