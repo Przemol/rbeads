@@ -13,14 +13,14 @@
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-    <title>Rbeads by Przemol</title>
+    <title>rBEADS by Przemol</title>
   </head>
 
   <body>
     <header>
       <div class="inner">
-        <h1>Rbeads</h1>
-        <h2></h2>
+        <h1>rBEADS</h1>
+        <h2>R implementation of Bias Elimination Algorithm for Deep Sequencing</h2>
         <a href="https://github.com/Przemol/rbeads" class="button"><small>View project on</small>GitHub</a>
       </div>
     </header>
@@ -28,14 +28,7 @@
     <div id="content-wrapper">
       <div class="inner clearfix">
         <section id="main-content">
-          <h1>
-<a name="rbeads" class="anchor" href="#rbeads"><span class="octicon octicon-link"></span></a>rBEADS</h1>
-
-<blockquote>
-<p>The R implementation of <strong>B</strong>ias <strong>E</strong>limination <strong>A</strong>lgorithm for <strong>D</strong>eep <strong>S</strong>equencing.</p>
-</blockquote>
-
-<p><a href="https://travis-ci.org/Przemol/rbeads"><img src="https://travis-ci.org/Przemol/rbeads.svg?branch=master" alt="Build Status"></a></p>
+          <p><a href="https://travis-ci.org/Przemol/rbeads"><img src="https://travis-ci.org/Przemol/rbeads.svg?branch=master" alt="Build Status"></a></p>
 
 <p><strong>BEADS</strong> is a normalization scheme that corrects nucleotide composition bias, mappability variations and differential local DNA structural effects in deep sequencing data. In high-throughput sequencing data, the recovery of sequenced DNA fragments is not uniform along the genome. In particular, GC-rich sequences are often over-represented and AT-rich sequences under-represented in sequencing data. In addition, the read mapping procedure also generates regional bias. Sequence reads that can be mapped to multiple sites in the genome are usually discarded. Genomic regions with high degeneracy therefore show lower mapped read coverage than unique portions of the genome. Mappability varies along the genome and thus creates systematic bias. Furthermore, local DNA or chromatin structural effects can lead to coverage inhomogeneity of sequencing data.</p>
 
@@ -51,7 +44,7 @@ biocLite<span class="p">(</span><span class="kt">c</span><span class="p">(</span
 <p>To install the latest development version directly from GitHub, run in R:</p>
 
 <div class="highlight highlight-r"><pre><span class="kr">if</span> <span class="p">(</span><span class="o">!</span><span class="kn">require</span><span class="p">(</span><span class="s">"devtools"</span><span class="p">))</span> install.packages<span class="p">(</span><span class="s">"devtools"</span><span class="p">)</span>
-devtools<span class="o">::</span>install_github<span class="p">(</span><span class="s">"przemol/rbeads"</span><span class="err">)</span>
+devtools<span class="o">::</span>install_github<span class="p">(</span><span class="s">"przemol/rbeads""</span><span class="err">)</span>
 </pre></div>
 
 <h2>
@@ -62,6 +55,35 @@ devtools<span class="o">::</span>install_github<span class="p">(</span><span cla
 <div class="highlight highlight-r"><pre><span class="kn">library</span><span class="p">(</span>rbeads<span class="p">)</span>
 help<span class="p">(</span>rbeads<span class="p">)</span>
 </pre></div>
+
+<p>R style reference manual (PDF) can be found <a href="https://github.com/Przemol/rbeads/releases/download/v0.3.1-alpha/rbeads.pdf"><strong>here</strong></a>.</p>
+
+<h2>
+<a name="mappability-tracks" class="anchor" href="#mappability-tracks"><span class="octicon octicon-link"></span></a>Mappability tracks</h2>
+
+<p>Following pre-calculated mappabiliti tracks (BigWig files) are avilable ta the moment:</p>
+
+<ul>
+<li>
+<a href="https://github.com/Przemol/rbeads/releases/download/v0.3.1-alpha/ce10_gem-mappability_36bp.bw"><code>ce10_gem-mappability_36bp.bw</code></a> - <em>C. elegans</em> mappability track for 36bp reads</li>
+<li>
+<a href="https://github.com/Przemol/rbeads/releases/download/v0.3.1-alpha/dm3_gem-mappability_36bp.bw"><code>dm3_gem-mappability_36bp.bw</code></a> - <em>D. melanogaster</em> mappability track for 36bp reads</li>
+</ul><p>Human tracks from <a href="http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeMapability/">UCSC</a>:</p>
+
+<ul>
+<li>
+<a href="http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeMapability/wgEncodeCrgMapabilityAlign24mer.bigWig"><code>wgEncodeCrgMapabilityAlign24mer.bigWig</code></a> - <em>H. sapiens</em> mappability track for 24bp reads</li>
+<li>
+<a href="http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeMapability/wgEncodeCrgMapabilityAlign36mer.bigWig"><code>wgEncodeCrgMapabilityAlign36mer.bigWig</code></a> - <em>H. sapiens</em> mappability track for 36bp reads</li>
+<li>
+<a href="http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeMapability/wgEncodeCrgMapabilityAlign40mer.bigWig"><code>wgEncodeCrgMapabilityAlign40mer.bigWig</code></a> - <em>H. sapiens</em> mappability track for 40bp reads</li>
+<li>
+<a href="http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeMapability/wgEncodeCrgMapabilityAlign50mer.bigWig"><code>wgEncodeCrgMapabilityAlign50mer.bigWig</code></a> - <em>H. sapiens</em> mappability track for 50bp reads</li>
+<li>
+<a href="http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeMapability/wgEncodeCrgMapabilityAlign75mer.bigWig"><code>wgEncodeCrgMapabilityAlign75mer.bigWig</code></a> - <em>H. sapiens</em> mappability track for 75bp reads</li>
+<li>
+<a href="http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeMapability/wgEncodeCrgMapabilityAlign100mer.bigWig"><code>wgEncodeCrgMapabilityAlign100mer.bigWig</code></a> - <em>H. sapiens</em> mappability track for 100bp reads</li>
+</ul>
         </section>
 
         <aside id="sidebar">
