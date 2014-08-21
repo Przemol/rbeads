@@ -18,7 +18,7 @@ biocLite(c('methods','IRanges','BSgenome','digest','Rsamtools','rtracklayer','Ge
 To install the latest development version directly from GitHub, run in R:
 ```{r}
 if (!require("devtools")) install.packages("devtools")
-devtools::install_github("przemol/rbeads"")
+devtools::install_github("przemol/rbeads")
 ```
 
 ## Getting Started
