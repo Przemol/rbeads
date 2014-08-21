@@ -82,11 +82,14 @@
 #' beads(sample_bam, SummedInput_bw, map_bw, ref_fa)
 #' 
 #' \dontrun{
-#' # Run BEADS for BSgenome package, the reference genome package have to be installed prior to running this example
+#' ## Run BEADS for BSgenome package, the reference genome package have to be installed prior to running this example
 #' # source("http://bioconductor.org/biocLite.R")
 #' # biocLite("BSgenome.Celegans.UCSC.ce10")
 #' # library(BSgenome.Celegans.UCSC.ce10)
 #' beads(sample_bam, SummedInput_bw, map_bw, genome='ce10')
+#' 
+#' ## Run BEADS for all BAM files in the directory
+#' #lapply(dir(pattern='bam$'), beads, control=input, mappability=map_bw, genome=ref_fa)
 #' }
 #' 
 setGeneric("beads",
