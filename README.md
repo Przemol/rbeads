@@ -61,7 +61,7 @@ References
 
 - Publication describing the BEADS algorithm:
  
-    Cheung, M-S., Down, T.A., Latorre, I., and Ahringer, J. (2011) [**Systematic bias in deep sequencing data and its correction by BEADS**](http://www.ncbi.nlm.nih.gov/pubmed/21646344) Nucleic Acids Research 39(15):e103
+    Cheung, M-S., Down, T.A., Latorre, I., and Ahringer, J. (2011) [Systematic bias in deep sequencing data and its correction by BEADS](http://www.ncbi.nlm.nih.gov/pubmed/21646344) *Nucleic Acids Research* 39(15):e103
 
 - Original Python/Java implementation:
 http://beads.sourceforge.net/
