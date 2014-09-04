@@ -12,11 +12,13 @@ rBEADS is in pre-release (alpha) stage. The software is provided for testing pur
 
 BEADS algorithm requires deep inputs (high reads coverage) to work properly. This means >50 million reads for worm and fly experiments and proportionally higher number for mammalian experiments. It is suggested to pool multiple input experiments using ```sumBAMinputs``` function from rBEADS package.
 
-## Introduction
+Introduction
+------------
 
 **BEADS** is a normalization scheme that corrects nucleotide composition bias, mappability variations and differential local DNA structural effects in deep sequencing data. In high-throughput sequencing data, the recovery of sequenced DNA fragments is not uniform along the genome. In particular, GC-rich sequences are often over-represented and AT-rich sequences under-represented in sequencing data. In addition, the read mapping procedure also generates regional bias. Sequence reads that can be mapped to multiple sites in the genome are usually discarded. Genomic regions with high degeneracy therefore show lower mapped read coverage than unique portions of the genome. Mappability varies along the genome and thus creates systematic bias. Furthermore, local DNA or chromatin structural effects can lead to coverage inhomogeneity of sequencing data.
 
-## Installation
+Installation
+------------
 
 First, install required BioConductor packages, by running in R:
 ```{r}
@@ -39,7 +41,8 @@ help(rbeads)
 ```
 R style reference manual (PDF) can be found [**here**](https://github.com/Przemol/rbeads/releases/download/v0.3.1-alpha/rbeads.pdf).
 
-## Mappability tracks
+Mappability tracks
+------------------
 
 Following pre-calculated mappabiliti tracks (BigWig files) are avilable ta the moment:
 * [```ce10_gem-mappability_36bp.bw```](https://github.com/Przemol/rbeads/releases/download/v0.3.1-alpha/ce10_gem-mappability_36bp.bw) - *C. elegans* mappability track for 36bp reads
@@ -52,3 +55,16 @@ Human tracks from [UCSC](http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDC
 * [```wgEncodeCrgMapabilityAlign50mer.bigWig ```](http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeMapability/wgEncodeCrgMapabilityAlign50mer.bigWig) - *H. sapiens* mappability track for 50bp reads
 * [```wgEncodeCrgMapabilityAlign75mer.bigWig```](http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeMapability/wgEncodeCrgMapabilityAlign75mer.bigWig) - *H. sapiens* mappability track for 75bp reads
 * [```wgEncodeCrgMapabilityAlign100mer.bigWig ```](http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeMapability/wgEncodeCrgMapabilityAlign100mer.bigWig) - *H. sapiens* mappability track for 100bp reads
+
+References
+----------
+
+- Publication describing the BEADS algorithm:
+ 
+    Cheung, M-S., Down, T.A., Latorre, I., and Ahringer, J. (2011) [**Systematic bias in deep sequencing data and its correction by BEADS**](http://www.ncbi.nlm.nih.gov/pubmed/21646344) Nucleic Acids Research 39(15):e103
+
+- Original Python/Java implementation:
+http://beads.sourceforge.net/
+
+
+
