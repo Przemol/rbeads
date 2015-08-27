@@ -59,7 +59,7 @@ sumBAMinputs <- function(bam.controls=dir(pattern='bam$'), bw.mappability,
   if( quickMap ) {
     message('Importing mappability [binning]...')
     if( class(bw.mappability) == 'BigWigFile' ) { bwf <- bw.mappability } else { bwf <- BigWigFile( bw.mappability ) }
-    MAP  <- IRanges::summary(bwf, size=GenomicRanges::seqlengths(bwf)/insert, asRle=TRUE)
+    MAP  <- IRanges::summary(bwf, size=seqlengths(bwf)/insert, asRle=TRUE)
     MAP[is.na(MAP)] <- 0
     MAPF <- ( MAP > 0.5 )
   } else {
