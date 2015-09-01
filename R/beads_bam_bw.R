@@ -51,7 +51,7 @@ beads_bam_bw  <- function(bam.file, bw.control, bw.mappability, genome, uniq=TRU
   }
   
   message('Exporing BigWig tracks...')
-  exp <- list('control.re', 'control.gc', 'control.map', 'sample.coverage', 'sample.gc', 'sample.map', 'sample.norm')
+  exp <- list('control.re', 'control.gc', 'control.map', 'sample.re', 'sample.gc', 'sample.map', 'sample.norm')
   names(exp) <- c('control_readsCoverage', 'control_GCcorected', 'control_GCandMap', 'readsCoverage', 'GCcorected', 'GCandMap', 'BEADS')
   bw_lst <- lapply( names(exp[export]), function(x) toBW_missing(get(exp[[x]]), x, basename(bam.file)) )
   

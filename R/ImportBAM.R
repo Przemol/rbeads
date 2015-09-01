@@ -49,6 +49,6 @@ ImportBAM <- function(bam.file=dir(pattern="\\.bam$")[1], REF, uniq=FALSE, resiz
                     length(ranges.raw), num$records, 100*length(ranges.raw)/num$records, quality_cutoff, num$records, length(lg), sum(lg) ))
   }
 	
-  return(ranges.raw)
+  return(trim(ranges.raw))
 
 }
