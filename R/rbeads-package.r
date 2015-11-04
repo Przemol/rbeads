@@ -30,7 +30,7 @@
 #' beads(sample_bam, SummedInput_bw, map_bw, ref_fa)
 #' 
 #' @author Przemyslaw Stempor
-#' @import Rsamtools digest rtracklayer GenomicRanges BSgenome Biostrings IRanges methods
+#' @import Rsamtools digest rtracklayer GenomicRanges BSgenome Biostrings IRanges methods GenomeInfoDb S4Vectors
 #' @keywords package
 #' 
 #' @docType package

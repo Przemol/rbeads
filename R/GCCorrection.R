@@ -13,7 +13,7 @@ GCCorrection <- function(ranges.raw, enriched_regions, nonMappableFilter, REF, R
  
 	#Calculate input GC content from RL [200bp] extended reads (ranges.raw)
 	catTime("Calculate input GCcontent", e={
-      GCcontent <- unlist( lapply( IRanges::split(ranges.raw, seqnames(ranges.raw)), function(x) {
+      GCcontent <- unlist( lapply( split(ranges.raw, seqnames(ranges.raw)), function(x) {
         cat('.'); letterFrequency(REF[x], 'GC') 
       } ), use.names=FALSE)
 		#GCcontent <- as.integer(letterFrequency(REF[ranges.raw], "GC"))
@@ -108,7 +108,7 @@ GCCorrection <- function(ranges.raw, enriched_regions, nonMappableFilter, REF, R
 	  catTime("Masking non-GCcorrectable regions", e={
       rang <- as(seqinfo(ranges.f1), 'GRanges')
       cutoff <- range(which( b/sum(b) > 0.0001 ))
-		  notGCcorrectableRegions2 <- sapply( IRanges::split(rang, seqnames(rang)) , function(x) {
+		  notGCcorrectableRegions2 <- sapply( split(rang, seqnames(rang)) , function(x) {
 			  GCchr <- letterFrequencyInSlidingView(REF[x][[1]], RL, "GC"); cat('.')
         ind <- which( ! (GCchr >= cutoff[1] & GCchr <= cutoff[2]) ); cat('.')
         if( length(ind) ) {

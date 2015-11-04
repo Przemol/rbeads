@@ -25,7 +25,9 @@ Imports:
     Rsamtools,
     rtracklayer,
     GenomicRanges,
-    Biostrings
+    Biostrings,
+    GenomeInfoDb,
+    S4Vectors
 License: LGPL
 LazyData: true
 Type: Package
