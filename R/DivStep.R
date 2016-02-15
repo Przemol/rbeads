@@ -19,7 +19,9 @@ DivStep <- function(sample, control) {
 	  #tabulation <- tabulation[names(tabulation)!=0]
 	  aa <- as.numeric(names(tabulation))[ which.max( cumsum(tabulation) / sum(tabulation) >= .5 ) ]
     
-    divstep <- round(divstep / aa, 3)
+	  if (aa > 0)
+	    divstep <- round(divstep / aa, 3)
+	  
 	})
 	message('INFO: BEADS score scaling coefficient = ', aa, '\n', sep='')
 	
