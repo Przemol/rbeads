@@ -34,3 +34,4 @@ Type: Package
 Date: 2014-04-14
 Suggests:
     testthat
+RoxygenNote: 5.0.1

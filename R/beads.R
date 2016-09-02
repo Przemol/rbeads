@@ -92,6 +92,8 @@
 #' #lapply(dir(pattern='bam$'), beads, control=input, mappability=map_bw, genome=ref_fa)
 #' }
 #' 
+#' ## In parallel:
+#' mclapply(dir(pattern='.bam$'), beads, control=input, mappability=map_bw, genome='ce10', mc.cores=16)
 setGeneric("beads",
   function(experiment, control, mappability, genome, uniq=TRUE, insert=200L, mapq_cutoff=10L, export='BEADS', rdata=FALSE, export_er=TRUE, quickMap=TRUE, ...) 
   standardGeneric("beads")
