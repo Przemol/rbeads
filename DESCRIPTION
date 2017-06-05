@@ -1,6 +1,6 @@
 Package: rbeads
 Title: R implementation of Bias Elimination Algorithm for Deep Sequencing
-Version: 0.3.1
+Version: 0.3.2
 Author: Przemyslaw Stempor <ps562@cam.ac.uk>
 Maintainer: Przemyslaw Stempor <ps562@cam.ac.uk>
 Description: BEADS is a normalization scheme that corrects nucleotide
@@ -34,4 +34,4 @@ Type: Package
 Date: 2014-04-14
 Suggests:
     testthat
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1

@@ -43,7 +43,7 @@ beads_bam_bw  <- function(bam.file, bw.control, bw.mappability, genome, uniq=TRU
   
   if(export_er) {
     message('Exporing ER...'); er_con <- file(gsub('.bam$', '_EnrichedRegions.bed', basename(bam.file)))
-    export.bed(sample.er, er_con); close(er_con)
+    export.bed(sample.er, er_con); #close(er_con)
   }
   if(rdata) { 
     message('Exporing Rdata binaries...')

@@ -17,10 +17,10 @@ test_that("Test beads with ref genome in fasta file", {
   expect_true(file.exists( file.path(tmp, 'GSM1208360_chrI_100Kb_q5_sample_BEADS_linear_1bp.bw') ))
   
   cc <- cor(
-    as.numeric(IRanges::unlist( import.bw(file.path(tmp, 'GSM1208360_chrI_100Kb_q5_sample_BEADS_linear_1bp.bw'), as="RleList"), use.names=FALSE)), 
-    as.numeric(IRanges::unlist( get(load(system.file("extdata", "GSM1208360_expected.Rdata", package="rbeads"))), use.names=FALSE)),
-  , use='comp')
-  expect_more_than(cc, .99, info=cc)
+    as.numeric(unlist( import.bw(file.path(tmp, 'GSM1208360_chrI_100Kb_q5_sample_BEADS_linear_1bp.bw'), as="RleList"), use.names=FALSE)), 
+    as.numeric(unlist( get(load(system.file("extdata", "GSM1208360_expected.Rdata", package="rbeads"))), use.names=FALSE)),
+  use='comp')
+  expect_gt(cc, .99)
 
 })
 
@@ -35,10 +35,10 @@ test_that("Test beads with ref genome in BSGenome package", {
   expect_true(file.exists( file.path(tmp, 'GSM1208360_chrI_100Kb_q5_sample_BEADS_linear_1bp.bw') ))
   
   cc <- cor(
-    as.numeric(IRanges::unlist( import.bw(file.path(tmp, 'GSM1208360_chrI_100Kb_q5_sample_BEADS_linear_1bp.bw'), as="RleList"), use.names=FALSE)), 
-    as.numeric(IRanges::unlist( get(load(system.file("extdata", "GSM1208360_expected.Rdata", package="rbeads"))), use.names=FALSE)),
-    , use='comp')
-  expect_more_than(cc, .99, info=cc)
+    as.numeric(unlist( import.bw(file.path(tmp, 'GSM1208360_chrI_100Kb_q5_sample_BEADS_linear_1bp.bw'), as="RleList"), use.names=FALSE)), 
+    as.numeric(unlist( get(load(system.file("extdata", "GSM1208360_expected.Rdata", package="rbeads"))), use.names=FALSE)),
+    use='comp')
+  expect_gt(cc, .99)
   
 })
 
@@ -53,10 +53,10 @@ test_that("Test beads for two BAM", {
   expect_true(file.exists( file.path(tmp, 'GSM1208360_chrI_100Kb_q5_sample_BEADS_linear_1bp.bw') ))
   
   cc <- cor(
-    as.numeric(IRanges::unlist( import.bw(file.path(tmp, 'GSM1208360_chrI_100Kb_q5_sample_BEADS_linear_1bp.bw'), as="RleList"), use.names=FALSE)), 
-    as.numeric(IRanges::unlist( get(load(system.file("extdata", "GSM1208360_expected.Rdata", package="rbeads"))), use.names=FALSE)),
-    , use='comp')
-  expect_more_than(cc, .94, info=cc)
+    as.numeric(unlist( import.bw(file.path(tmp, 'GSM1208360_chrI_100Kb_q5_sample_BEADS_linear_1bp.bw'), as="RleList"), use.names=FALSE)), 
+    as.numeric(unlist( get(load(system.file("extdata", "GSM1208360_expected.Rdata", package="rbeads"))), use.names=FALSE)),
+    use='comp')
+  expect_gt(cc, .94)
   
 })
 
@@ -67,7 +67,7 @@ test_that("Test summed input", {
   
   context("Binning helper function")
   track <- import.bw(system.file("extdata", "Ce10_HiSeqFRMInput_UNIQ_bin25bp_chrI_100Kb_sample.bw", package="rbeads"), as="RleList")
-  expect_equal(as.integer(runValue(binRle2Rle(track, 100000L))), as.integer(mean(as.numeric(IRanges::unlist(track, use.names=FALSE)), na.rm=TRUE)))
+  expect_equal(as.integer(runValue(binRle2Rle(track, 100000L))), as.integer(mean(as.numeric(unlist(track, use.names=FALSE)), na.rm=TRUE)))
   
   context("Summed input creation")
   a <- rtracklayer::summary(sumBAMinputs(c(input_bam, input_bam), map_bw, ref_fa, out_name = tmp))

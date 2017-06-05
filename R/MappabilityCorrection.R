@@ -8,7 +8,7 @@ MappabilityCorrection <- function(GCnormTrack, mappabilityTrack=NULL, cutoff=0.2
 	  GCnormTrack[mappabilityTrack[names(GCnormTrack)] < cutoff] <- NA	
 	})
   
-  message("\tINFO: Total ", round(sum(as.numeric(sum(is.na( GCnormTrack )))) / sum(as.numeric(elementLengths( GCnormTrack )))*100, 2), "% of genome in masked.")
+  message("\tINFO: Total ", round(sum(as.numeric(sum(is.na( GCnormTrack )))) / sum(as.numeric(lengths( GCnormTrack )))*100, 2), "% of genome in masked.")
 	return(GCnormTrack)
   
 }

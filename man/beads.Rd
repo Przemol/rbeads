@@ -108,6 +108,7 @@ For example: \code{  beads(sample_bam, input_bam, map, fa, export=c('control_rea
 
 \item \code{experiment = character,control = character,mappability = character,genome = character}: Method for signature experiment='character', control='character', mappability='character', genome='character'
 }}
+
 \examples{
 # Get the paths of example files
 sample_bam <- system.file("extdata", "GSM1208360_chrI_100Kb_q5_sample.bam", package="rbeads")
@@ -137,12 +138,12 @@ beads(sample_bam, SummedInput_bw, map_bw, genome='ce10')
 }
 
 ## In parallel:
+library(parallel)
 mclapply(dir(pattern='.bam$'), beads, control=input, mappability=map_bw, genome='ce10', mc.cores=16)
-}
-\author{
-Przemyslaw Stempor
 }
 \references{
 \url{http://beads.sourceforge.net/} \cr \url{http://www.ncbi.nlm.nih.gov/pubmed/21646344}
 }
-
+\author{
+Przemyslaw Stempor
+}

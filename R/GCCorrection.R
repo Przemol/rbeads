@@ -115,7 +115,7 @@ GCCorrection <- function(ranges.raw, enriched_regions, nonMappableFilter, REF, R
 			  GRanges( seqnames=seqnames(x), ranges=reduce(IRanges( ind , width=RL)) )
         } else { NULL }
 		  })
-		  notGCcorrectableRegions <- GRangesList(notGCcorrectableRegions2[elementLengths(notGCcorrectableRegions2)>0 ])
+		  notGCcorrectableRegions <- GRangesList(notGCcorrectableRegions2[lengths(notGCcorrectableRegions2)>0 ])
       cov[ coverage(notGCcorrectableRegions)[names(cov)] > 0 ] <- NA
 	  })
 	  message("INFO: masking ", round(sum(as.numeric(sum( coverage(notGCcorrectableRegions)[names(cov)] > 0 ))) / sum(as.numeric(seqlengths(rang)))*100, 2), "% of genome in gc-correctable regions")

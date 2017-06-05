@@ -63,10 +63,9 @@ out2 <- sumBAMinputs(input_bam, map_bw, ref_fa)
 rtracklayer::summary(out1)[[1]]$score / rtracklayer::summary(out2)[[1]]$score
 
 }
-\author{
-Przemyslaw Stempor
-}
 \references{
 \url{http://beads.sourceforge.net/} \cr \url{http://www.ncbi.nlm.nih.gov/pubmed/21646344}
 }
-
+\author{
+Przemyslaw Stempor
+}
