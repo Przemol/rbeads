@@ -3,7 +3,7 @@ rBEADS
 
 > The R implementation of <strong>B</strong>ias <strong>E</strong>limination <strong>A</strong>lgorithm for <strong>D</strong>eep <strong>S</strong>equencing.
 
-[![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.11427.png)](http://dx.doi.org/10.5281/zenodo.11427)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.11427.svg)](https://doi.org/10.5281/zenodo.11427)
 [![Build Status](https://travis-ci.org/Przemol/rbeads.svg?branch=master)](https://travis-ci.org/Przemol/rbeads)
 
 :exclamation:  **RELEASE NOTE**  :exclamation:

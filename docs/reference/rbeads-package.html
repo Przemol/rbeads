@@ -115,37 +115,37 @@
 <span class='fu'>setwd</span>(<span class='fu'>tempdir</span>())
 
 <span class='co'># Run BEADS for BAM input file</span>
-<span class='fu'><a href='beads.html'>beads</a></span>(<span class='no'>sample_bam</span>, <span class='no'>input_bam</span>, <span class='no'>map_bw</span>, <span class='no'>ref_fa</span>)</div><div class='output co'>#&gt; <span class='message'>Importing refference genome...</span></div><div class='output co'>#&gt; <span class='message'>Importing mappability [binning]...</span></div><div class='output co'>#&gt; <span class='message'>Importing input...</span></div><div class='output co'>#&gt; Reading alignment file [/Users/przemol/code/rbeads/inst/extdata/Input_fE3_AA169.bam]...	&lt;0.025s&gt;
-#&gt; Processing alignment file [uniq=TRUE]:...	&lt;0.067s&gt;</div><div class='output co'>#&gt; <span class='message'>INFO: 22409 out of 27847 (80.47%) reads mapped uniquely with 10 quality cutoff: [All=27847, Mapped=27847, Qmapped=27807, Quniq=22409].</span></div><div class='output co'>#&gt; Calculate input GCcontent....	&lt;1.062s&gt;
-#&gt; Sample genome for GCcontent....	&lt;0.006s&gt;
-#&gt; Calculate histograms for genomic (a) nad and sample (b) GC content...</div><div class='output co'>#&gt; 	&lt;0.051s&gt;
-#&gt; Calculate GC weighting vector...</div><div class='output co'>#&gt; 	&lt;0.266s&gt;
-#&gt; Assign GC score to every read...	&lt;0.001s&gt;
-#&gt; Prepare GCscore-enriched GRanges...	&lt;0.029s&gt;
-#&gt; Calculate GC weighted coverage...	&lt;0.023s&gt;
-#&gt; Mappability correction...	&lt;0.016s&gt;</div><div class='output co'>#&gt; <span class='message'>	INFO: Total 3% of genome in masked.</span></div><div class='output co'>#&gt; Reading alignment file [/Users/przemol/code/rbeads/inst/extdata/GSM1208360_chrI_100Kb_q5_sample.bam]...	&lt;0.016s&gt;
-#&gt; Processing alignment file [uniq=TRUE]:...	&lt;0.04s&gt;</div><div class='output co'>#&gt; <span class='message'>INFO: 8216 out of 10373 (79.21%) reads mapped uniquely with 10 quality cutoff: [All=10373, Mapped=10373, Qmapped=10346, Quniq=8216].</span></div><div class='output co'>#&gt; Calculate coverage...	&lt;0.013s&gt;</div><div class='output co'>#&gt; <span class='message'>INFO: a = 18</span></div><div class='output co'>#&gt; Calling enriched regions...	&lt;0.036s&gt;
-#&gt; Mask out reads in enriched regions...	&lt;0.011s&gt;</div><div class='output co'>#&gt; <span class='message'> INFO: percentage of reads in non-enriched regions: 57.17%</span></div><div class='output co'>#&gt; Calculate input GCcontent....	&lt;0.151s&gt;
-#&gt; Sample genome for GCcontent....	&lt;0.019s&gt;
-#&gt; Calculate histograms for genomic (a) nad and sample (b) GC content...</div><div class='output co'>#&gt; 	&lt;0.034s&gt;
-#&gt; Calculate GC weighting vector...</div><div class='output co'>#&gt; 	&lt;0.016s&gt;
+<span class='fu'><a href='beads.html'>beads</a></span>(<span class='no'>sample_bam</span>, <span class='no'>input_bam</span>, <span class='no'>map_bw</span>, <span class='no'>ref_fa</span>)</div><div class='output co'>#&gt; <span class='message'>Importing refference genome...</span></div><div class='output co'>#&gt; <span class='message'>Importing mappability [binning]...</span></div><div class='output co'>#&gt; <span class='message'>Importing input...</span></div><div class='output co'>#&gt; Reading alignment file [/Users/przemol/code/rbeads/inst/extdata/Input_fE3_AA169.bam]...	&lt;0.023s&gt;
+#&gt; Processing alignment file [uniq=TRUE]:...	&lt;0.052s&gt;</div><div class='output co'>#&gt; <span class='message'>INFO: 22409 out of 27847 (80.47%) reads mapped uniquely with 10 quality cutoff: [All=27847, Mapped=27847, Qmapped=27807, Quniq=22409].</span></div><div class='output co'>#&gt; Calculate input GCcontent....	&lt;0.829s&gt;
+#&gt; Sample genome for GCcontent....	&lt;0.007s&gt;
+#&gt; Calculate histograms for genomic (a) nad and sample (b) GC content...</div><div class='output co'>#&gt; 	&lt;0.014s&gt;
+#&gt; Calculate GC weighting vector...</div><div class='output co'>#&gt; 	&lt;0.015s&gt;
+#&gt; Assign GC score to every read...	&lt;0s&gt;
+#&gt; Prepare GCscore-enriched GRanges...	&lt;0.007s&gt;
+#&gt; Calculate GC weighted coverage...	&lt;0.018s&gt;
+#&gt; Mappability correction...	&lt;0.012s&gt;</div><div class='output co'>#&gt; <span class='message'>	INFO: Total 3% of genome in masked.</span></div><div class='output co'>#&gt; Reading alignment file [/Users/przemol/code/rbeads/inst/extdata/GSM1208360_chrI_100Kb_q5_sample.bam]...	&lt;0.016s&gt;
+#&gt; Processing alignment file [uniq=TRUE]:...	&lt;0.036s&gt;</div><div class='output co'>#&gt; <span class='message'>INFO: 8216 out of 10373 (79.21%) reads mapped uniquely with 10 quality cutoff: [All=10373, Mapped=10373, Qmapped=10346, Quniq=8216].</span></div><div class='output co'>#&gt; Calculate coverage...	&lt;0.01s&gt;</div><div class='output co'>#&gt; <span class='message'>INFO: a = 18</span></div><div class='output co'>#&gt; Calling enriched regions...	&lt;0.02s&gt;
+#&gt; Mask out reads in enriched regions...	&lt;0.009s&gt;</div><div class='output co'>#&gt; <span class='message'> INFO: percentage of reads in non-enriched regions: 57.17%</span></div><div class='output co'>#&gt; Calculate input GCcontent....	&lt;0.14s&gt;
+#&gt; Sample genome for GCcontent....	&lt;0.015s&gt;
+#&gt; Calculate histograms for genomic (a) nad and sample (b) GC content...</div><div class='output co'>#&gt; 	&lt;0.033s&gt;
+#&gt; Calculate GC weighting vector...</div><div class='output co'>#&gt; 	&lt;0.015s&gt;
 #&gt; Assign GC score to every read...	&lt;0s&gt;
 #&gt; Prepare GCscore-enriched GRanges...	&lt;0.004s&gt;
-#&gt; Calculate GC weighted coverage...	&lt;0.012s&gt;
-#&gt; Mappability correction...	&lt;0.01s&gt;</div><div class='output co'>#&gt; <span class='message'>	INFO: Total 3% of genome in masked.</span></div><div class='output co'>#&gt; DivStep: Divideing...	&lt;0.467s&gt;
+#&gt; Calculate GC weighted coverage...	&lt;0.014s&gt;
+#&gt; Mappability correction...	&lt;0.356s&gt;</div><div class='output co'>#&gt; <span class='message'>	INFO: Total 3% of genome in masked.</span></div><div class='output co'>#&gt; DivStep: Divideing...	&lt;0.021s&gt;
 #&gt; DivStep [median ]: Scaling...	&lt;0.028s&gt;</div><div class='output co'>#&gt; <span class='message'>INFO: BEADS score scaling coefficient = 0.297</span></div><div class='output co'>#&gt; <span class='message'>Exporing ER...</span></div><div class='output co'>#&gt; <span class='message'>Exporing BigWig tracks...</span></div><div class='output co'>#&gt; <span class='message'>Exporting to BigWiggle: GSM1208360_chrI_100Kb_q5_sample_BEADS_linear_1bp.bw</span></div><div class='input'>
 <span class='co'># Run BEADS for SummedInput (BigWig) input file</span>
 <span class='fu'><a href='beads.html'>beads</a></span>(<span class='no'>sample_bam</span>, <span class='no'>SummedInput_bw</span>, <span class='no'>map_bw</span>, <span class='no'>ref_fa</span>)</div><div class='output co'>#&gt; <span class='message'>Importing refference genome...</span></div><div class='output co'>#&gt; <span class='message'>Importing mappability [binning]...</span></div><div class='output co'>#&gt; <span class='message'>Importing input...</span></div><div class='output co'>#&gt; Reading alignment file [/Users/przemol/code/rbeads/inst/extdata/GSM1208360_chrI_100Kb_q5_sample.bam]...	&lt;0.014s&gt;
-#&gt; Processing alignment file [uniq=TRUE]:...	&lt;0.033s&gt;</div><div class='output co'>#&gt; <span class='message'>INFO: 8216 out of 10373 (79.21%) reads mapped uniquely with 10 quality cutoff: [All=10373, Mapped=10373, Qmapped=10346, Quniq=8216].</span></div><div class='output co'>#&gt; Calculate coverage...	&lt;0.011s&gt;</div><div class='output co'>#&gt; <span class='message'>INFO: a = 18</span></div><div class='output co'>#&gt; Calling enriched regions...	&lt;0.023s&gt;
-#&gt; Mask out reads in enriched regions...	&lt;0.008s&gt;</div><div class='output co'>#&gt; <span class='message'> INFO: percentage of reads in non-enriched regions: 57.17%</span></div><div class='output co'>#&gt; Calculate input GCcontent....	&lt;0.135s&gt;
+#&gt; Processing alignment file [uniq=TRUE]:...	&lt;0.034s&gt;</div><div class='output co'>#&gt; <span class='message'>INFO: 8216 out of 10373 (79.21%) reads mapped uniquely with 10 quality cutoff: [All=10373, Mapped=10373, Qmapped=10346, Quniq=8216].</span></div><div class='output co'>#&gt; Calculate coverage...	&lt;0.01s&gt;</div><div class='output co'>#&gt; <span class='message'>INFO: a = 18</span></div><div class='output co'>#&gt; Calling enriched regions...	&lt;0.02s&gt;
+#&gt; Mask out reads in enriched regions...	&lt;0.009s&gt;</div><div class='output co'>#&gt; <span class='message'> INFO: percentage of reads in non-enriched regions: 57.17%</span></div><div class='output co'>#&gt; Calculate input GCcontent....	&lt;0.132s&gt;
 #&gt; Sample genome for GCcontent....	&lt;0.015s&gt;
-#&gt; Calculate histograms for genomic (a) nad and sample (b) GC content...</div><div class='output co'>#&gt; 	&lt;0.032s&gt;
-#&gt; Calculate GC weighting vector...</div><div class='output co'>#&gt; 	&lt;0.017s&gt;
-#&gt; Assign GC score to every read...	&lt;0s&gt;
+#&gt; Calculate histograms for genomic (a) nad and sample (b) GC content...</div><div class='output co'>#&gt; 	&lt;0.014s&gt;
+#&gt; Calculate GC weighting vector...</div><div class='output co'>#&gt; 	&lt;0.014s&gt;
+#&gt; Assign GC score to every read...	&lt;0.001s&gt;
 #&gt; Prepare GCscore-enriched GRanges...	&lt;0.004s&gt;
 #&gt; Calculate GC weighted coverage...	&lt;0.013s&gt;
-#&gt; Mappability correction...	&lt;0.012s&gt;</div><div class='output co'>#&gt; <span class='message'>	INFO: Total 3% of genome in masked.</span></div><div class='output co'>#&gt; DivStep: Divideing...	&lt;0.01s&gt;
-#&gt; DivStep [median ]: Scaling...	&lt;0.015s&gt;</div><div class='output co'>#&gt; <span class='message'>INFO: BEADS score scaling coefficient = 0.081</span></div><div class='output co'>#&gt; <span class='message'>Exporing ER...</span></div><div class='output co'>#&gt; <span class='message'>Exporing BigWig tracks...</span></div><div class='output co'>#&gt; <span class='message'>Exporting to BigWiggle: GSM1208360_chrI_100Kb_q5_sample_BEADS_linear_1bp.bw</span></div><div class='input'>
+#&gt; Mappability correction...	&lt;0.011s&gt;</div><div class='output co'>#&gt; <span class='message'>	INFO: Total 3% of genome in masked.</span></div><div class='output co'>#&gt; DivStep: Divideing...	&lt;0.009s&gt;
+#&gt; DivStep [median ]: Scaling...	&lt;0.013s&gt;</div><div class='output co'>#&gt; <span class='message'>INFO: BEADS score scaling coefficient = 0.081</span></div><div class='output co'>#&gt; <span class='message'>Exporing ER...</span></div><div class='output co'>#&gt; <span class='message'>Exporing BigWig tracks...</span></div><div class='output co'>#&gt; <span class='message'>Exporting to BigWiggle: GSM1208360_chrI_100Kb_q5_sample_BEADS_linear_1bp.bw</span></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
