@@ -137,9 +137,11 @@ beads(sample_bam, SummedInput_bw, map_bw, genome='ce10')
 #lapply(dir(pattern='bam$'), beads, control=input, mappability=map_bw, genome=ref_fa)
 }
 
+\dontrun{
 ## In parallel:
-library(parallel)
-mclapply(dir(pattern='.bam$'), beads, control=input, mappability=map_bw, genome='ce10', mc.cores=16)
+# library(parallel)
+# mclapply(dir(pattern='.bam$'), beads, control=input, mappability=map_bw, genome='ce10', mc.cores=parallel::detectCores())
+}
 }
 \references{
 \url{http://beads.sourceforge.net/} \cr \url{http://www.ncbi.nlm.nih.gov/pubmed/21646344}

@@ -7,3 +7,4 @@ create.R$
 ^inst/tests/advanced_test\.sh$
 ^inst/tests/advanced_tests\.R$
 ^man/beads_batch\.Rd$
+^docs$
