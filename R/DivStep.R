@@ -5,7 +5,7 @@ DivStep <- function(sample, control) {
 
 	catTime("DivStep: Divideing", e={	
         commonChr <- intersect(names(sample), names(control))
-				divstep <- round(sample[commonChr] / (control[commonChr]+1), 3)
+				divstep <- round(sample[commonChr] / (control[commonChr]), 3)
 			})
 	
 	catTime("DivStep [median ]: Scaling", e={
