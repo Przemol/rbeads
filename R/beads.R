@@ -98,28 +98,28 @@
 #' # mclapply(dir(pattern='.bam$'), beads, control=input, mappability=map_bw, genome='ce10', mc.cores=parallel::detectCores())
 #' }
 setGeneric("beads",
-  function(experiment, control, mappability, genome, uniq=TRUE, insert=200L, mapq_cutoff=10L, export='BEADS', rdata=FALSE, export_er=TRUE, quickMap=TRUE, ...) 
+  function(experiment, control, mappability, genome, uniq=TRUE, insert=200L, mapq_cutoff=10L, export='BEADS', rdata=FALSE, export_er=TRUE, quickMap=TRUE, subsample=0L, ...) 
   standardGeneric("beads")
 )
 
 #' @describeIn beads Method for signature experiment='BamFile', control='BamFile', mappability='BigWigFile', genome='ANY'
 setMethod("beads", signature(experiment='BamFile', control='BamFile', mappability='ANY', genome='ANY'),
-  function(experiment, control, mappability, genome, uniq=TRUE, insert=200L, mapq_cutoff=10L, export='BEADS', rdata=FALSE, quickMap=TRUE,...) {
-    beads_bam_bam(path(experiment), path(control), mappability, genome, uniq, insert, mapq_cutoff, export, rdata, quickMap, ...)
+  function(experiment, control, mappability, genome, uniq=TRUE, insert=200L, mapq_cutoff=10L, export='BEADS', rdata=FALSE, quickMap=TRUE, subsample=0L, ...) {
+    beads_bam_bam(path(experiment), path(control), mappability, genome, uniq, insert, mapq_cutoff, export, rdata, quickMap, subsample, ...)
   }
 )
 
 #' @describeIn beads Method for signature experiment='BamFile', control='BigWigFile', mappability='BigWigFile', genome='ANY'
 setMethod("beads", c(experiment='BamFile', control='BigWigFile', mappability='ANY', genome='ANY'),
-  function(experiment, control, mappability, genome, uniq=TRUE, insert=200L, mapq_cutoff=10L, export='BEADS', rdata=FALSE, quickMap=TRUE, ...) {
-    beads_bam_bw(path(experiment), control, mappability, genome, uniq, insert, mapq_cutoff, export, rdata, quickMap, ...)
+  function(experiment, control, mappability, genome, uniq=TRUE, insert=200L, mapq_cutoff=10L, export='BEADS', rdata=FALSE, quickMap=TRUE, subsample=0L, ...) {
+    beads_bam_bw(path(experiment), control, mappability, genome, uniq, insert, mapq_cutoff, export, rdata, quickMap, subsample, ...)
   }
 )
 
 #' @describeIn beads Method for signature experiment='character', control='character', mappability='character', genome='character'
 setMethod("beads", signature(experiment='character', control='character', mappability='ANY', genome='character'),
-  function(experiment, control, mappability, genome, uniq=TRUE, insert=200L, mapq_cutoff=10L, export='BEADS', rdata=FALSE, quickMap=TRUE, ...) {
-    beads(FileForFormat(experiment), FileForFormat(control), mappability, genome, uniq, insert, mapq_cutoff, export, rdata, quickMap, ...)
+  function(experiment, control, mappability, genome, uniq=TRUE, insert=200L, mapq_cutoff=10L, export='BEADS', rdata=FALSE, quickMap=TRUE, subsample=0L, ...) {
+    beads(FileForFormat(experiment), FileForFormat(control), mappability, genome, uniq, insert, mapq_cutoff, export, rdata, quickMap, subsample, ...)
   }
 )
 

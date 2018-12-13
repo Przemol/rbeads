@@ -8,7 +8,11 @@
 #' 
 #' @keywords internal
 #'    
-beads_bam_bam <- function(bam.file, bam.control, bw.mappability, genome, uniq=TRUE, insert=200L, mapq_cutoff=10L, export='BEADS', rdata=FALSE, export_er=TRUE, quickMap=TRUE) {
+beads_bam_bam <- function(
+  bam.file, bam.control, bw.mappability, genome, uniq=TRUE, insert=200L, 
+  mapq_cutoff=10L, export='BEADS', rdata=FALSE, export_er=TRUE, quickMap=TRUE,
+  subsample=0L
+) {
   
   #Importing refference genome
   message('Importing refference genome...')
@@ -35,14 +39,14 @@ beads_bam_bam <- function(bam.file, bam.control, bw.mappability, genome, uniq=TR
 
   #Loading input from BigWig file
   message('Importing input...')
-  control.re <-  ImportBAM(bam.control, REF=REF, uniq=uniq, resize_length=insert, quality_cutoff=mapq_cutoff)
+  control.re <-  ImportBAM(bam.control, REF=REF, uniq=uniq, resize_length=insert, quality_cutoff=mapq_cutoff, subsample=subsample)
   control.gc <-  GCCorrection(control.re, enriched_regions=NULL, REF=REF, nonMappableFilter=MAPF, RL=insert, desc=gsub('.bam$', '', basename(bam.control)), smoothing_spline=FALSE)
   #message('Smoothing...')
   #control.gc <-  round( runmean(control.gc, ifelse(insert %% 2 == 0, insert+1, insert), endrule = "constant"), 2 )
   control.map <- MappabilityCorrection(GCnormTrack=control.gc, mappabilityTrack=MAP)
   
   #Full beads
-  sample.re <-   ImportBAM(bam.file, REF=REF, uniq=uniq, resize_length=insert, quality_cutoff=mapq_cutoff)
+  sample.re <-   ImportBAM(bam.file, REF=REF, uniq=uniq, resize_length=insert, quality_cutoff=mapq_cutoff, subsample=subsample)
   sample.er <-   EnrichedRegions(sample.re, REF=REF)
   sample.gc <-   GCCorrection(sample.re, enriched_regions=sample.er, REF=REF, nonMappableFilter=MAPF, RL=insert, desc=gsub('.bam$', '', basename(bam.file)), smoothing_spline=FALSE)
   sample.map <-  MappabilityCorrection(GCnormTrack=sample.gc, mappabilityTrack=MAP)

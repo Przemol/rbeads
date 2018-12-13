@@ -1,6 +1,9 @@
 # Przemyslaw Stempor, 2014
 ##############################################################################
-ImportBAM <- function(bam.file=dir(pattern="\\.bam$")[1], REF, uniq=FALSE, resize_length=200, quality_cutoff=10) {
+ImportBAM <- function(
+  bam.file=dir(pattern="\\.bam$")[1], REF, uniq=FALSE, resize_length=200, 
+  quality_cutoff=10, sdt_chrom=TRUE, subsample=0L
+) {
 	
 	#Read sam allignment file
 	catTime("Reading alignment file [", bam.file, "]",  e={
@@ -25,6 +28,16 @@ ImportBAM <- function(bam.file=dir(pattern="\\.bam$")[1], REF, uniq=FALSE, resiz
         seqlengths(ranges.raw) <- seqlengths(REF)[seqlevels(ranges.raw)]
       }
     })
+		
+		if (sdt_chrom) {
+		  message('Dropping: ', paste(seqlevels(ranges.raw)[!seqlevels(ranges.raw) %in% standardChromosomes(ranges.raw)], collapse=', '))
+		  ranges.raw <- keepStandardChromosomes(ranges.raw, pruning.mode="coarse")
+		}
+		
+		if(subsample) {
+		  message('!!! Subsamling to: ', subsample)
+		  ranges.raw <- sample(ranges.raw, subsample)
+		}
     
 		#Determinig if the ranges should be unified
 		if (uniq == TRUE) { 
